@@ -32,15 +32,19 @@
                     <table>
                         <tr>
                             <th>No</th>
+                            <th>Product Image</th>
                             <th>Product Name</th>
                             <th>Product Detail</th>
+                            <th>Product Price</th>
                             <th>Actions</th>
                         </tr>
                         @foreach($products as $product)
                         <tr>
-                            <td>{{++$i}}</td>
+                            <td>{{$product->image}}</td>
+                            <td><img class="w-16 h-16 rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt=""></td>
                             <td>{{$product->name}}</td>
                             <td>{{$product->detail}}</td>
+                            <td>{{$product->price}}</td>
                             <td class="w-auto px-6">
                                 <form method="POST" action="{{ route('products.destroy',$product->id) }}">
 

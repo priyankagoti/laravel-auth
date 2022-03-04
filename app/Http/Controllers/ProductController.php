@@ -39,9 +39,18 @@ class ProductController extends Controller
     {
         $request->validate([
             'name'=>'required',
-            'detail'=>'required'
+            'detail'=>'required',
+            'price'=>'required',
+            'category'=>'required',
+            'type'=>'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
-        Product::create($request->all());
+        $input = $request->all();
+        $imageName = time().'.'.$request->image->extension();
+        $request->image->storeAs('images', $imageName);
+        $input['image']=$imageName;
+
+        Product::create($input);
 
         return redirect()-> route('products.index')
             ->with('success','product created successfully');
@@ -67,7 +76,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.create',compact('product'));
+        return view('products.edit',compact('product'));
     }
 
     /**
@@ -79,12 +88,23 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $product->validate([
+        $request->validate([
             'name'=>'required',
-            'detail'=>'required'
+            'detail'=>'required',
+            'price'=>'required',
+            'category'=>'required',
+            'type'=>'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
-        $product->update($request->all());
+        $image_path=public_path().'/storage/images/'.$product->image;
+        unlink($image_path);
+        $input = $request->all();
+        $imageName = time().'.'.$request->image->extension();
+        $request->image->storeAs('images', $imageName);
+        $input['image']=$imageName;
+
+        $product->update($input);
 
         return redirect()->route('products.index')
             ->with('success','product updated successfully.');
@@ -98,8 +118,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        $image_path=public_path().'/storage/images/'.$product->image;
+        unlink($image_path);
         $product->delete();
-
         return redirect()->route('products.index')
             ->with('success','product deleted successfully');
     }
