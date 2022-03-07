@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -42,13 +43,14 @@ class ProductController extends Controller
             'detail'=>'required',
             'price'=>'required',
             'category'=>'required',
-            'type'=>'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
         $input = $request->all();
         $imageName = time().'.'.$request->image->extension();
         $request->image->storeAs('images', $imageName);
         $input['image']=$imageName;
+        $input['type'] = json_encode($request->type);
+       // $input['type']=$request->type->json_encode('type');
 
         Product::create($input);
 
@@ -65,6 +67,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+
         return view('products.show', compact('product'));
     }
 
@@ -76,7 +79,10 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.edit',compact('product'));
+        //$collection=json_decode($product->type, true);
+        $type_type = json_decode($product->type);
+       //$collection=$product->type;
+        return view('products.edit',compact('product','type_type'));
     }
 
     /**
@@ -93,7 +99,7 @@ class ProductController extends Controller
             'detail'=>'required',
             'price'=>'required',
             'category'=>'required',
-            'type'=>'required',
+
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
@@ -103,7 +109,7 @@ class ProductController extends Controller
         $imageName = time().'.'.$request->image->extension();
         $request->image->storeAs('images', $imageName);
         $input['image']=$imageName;
-
+        $input['type'] = json_encode($request->type);
         $product->update($input);
 
         return redirect()->route('products.index')

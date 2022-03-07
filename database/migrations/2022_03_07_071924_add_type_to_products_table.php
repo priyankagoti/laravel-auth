@@ -14,7 +14,7 @@ class AddTypeToProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->json('type')->nullable()->after('category');
+            $table->json('type')->after('category');
         });
     }
 

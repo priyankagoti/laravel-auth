@@ -36,15 +36,24 @@
                             <th>Product Name</th>
                             <th>Product Detail</th>
                             <th>Product Price</th>
+                            <th>Product Type</th>
+                            <th>Product Color</th>
                             <th>Actions</th>
                         </tr>
                         @foreach($products as $product)
                         <tr>
                             <td>{{$product->image}}</td>
-                            <td><img class="w-16 h-16 rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt=""></td>
+                            <td><img class="w-16 h-16 object-cover rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt=""></td>
                             <td>{{$product->name}}</td>
                             <td>{{$product->detail}}</td>
                             <td>{{$product->price}}</td>
+                            <td>
+                               {{-- {{gettype(json_decode($product->type))}}--}}
+                                @foreach(json_decode($product->type) as $value)
+                                    {{$value}},
+                                @endforeach
+                            </td>
+                            <td>{{$product->color}}</td>
                             <td class="w-auto px-6">
                                 <form method="POST" action="{{ route('products.destroy',$product->id) }}">
 

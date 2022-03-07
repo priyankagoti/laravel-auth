@@ -68,6 +68,28 @@
                         @if ($errors->has('category'))
                             <span class="text-red-600">{{ $errors->first('category') }}</span>
                         @endif
+
+                        <div>
+                            <x-label for="type" :value="__('Product Type')" />
+
+                            <label><input type="checkbox" name="type[]" value="Laravel"  @if (!empty($type_type) && in_array('Laravel', $type_type)) checked @endif /> Laravel</label>
+                            <label><input type="checkbox" name="type[]" value="JQuery" @if (!empty($type_type) && in_array('JQuery', $type_type)) checked @endif/> JQuery</label>
+                            <label><input type="checkbox" name="type[]" value="Bootstrap" @if (!empty($type_type) && in_array('Bootstrap', $type_type)) checked @endif/> Bootstrap</label>
+                            <label><input type="checkbox" name="type[]" value="Codeigniter" @if (!empty($type_type) && in_array('Codeigniter', $type_type))  @endif/> Codeigniter</label>
+                            @if ($errors->has('type'))
+                                <span class="text-red-600">{{ $errors->first('type') }}</span>
+                            @endif
+                        </div>
+                        <div>
+                            <x-label for="type" :value="__('Product Color')" />
+
+                            <select name="color" class="rounded-md w-32 h-8">
+                                <option disabled value="" selected>Select color</option>
+                                <option value="red" {{ $product->color == 'red' ? 'selected' : '' }}>Red</option>
+                                <option value="white" {{ $product->color == 'white' ? 'selected' : '' }}>White</option>
+                                <option value="black" {{ $product->color == 'black' ? 'selected' : '' }}>Black</option>
+                            </select>
+                        </div>
                         <div>
                             <x-label for="image" :value="__('Product Image')" />
 

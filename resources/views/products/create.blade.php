@@ -22,7 +22,7 @@
                         <div>
                             <x-label for="name" :value="__('Product Name')" />
 
-                            <x-input id="name" class="block mt-1 w-full" type="text" name="name"  autofocus />
+                            <input id="name" type="text" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500" name="name"  autofocus />
 
                             @if ($errors->has('name'))
                                 <span class="text-red-600">{{ $errors->first('name') }}</span>
@@ -33,20 +33,24 @@
                         <div class="mt-4">
                             <x-label for="detail" :value="__('Product Detail')" />
 
-                            <x-input id="price" class="block mt-1 w-full" type="text" name="detail"  />
+                            <input id="price" type="text" name="detail" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
                             @if ($errors->has('detail'))
                                 <span class="text-red-600">{{ $errors->first('detail') }}</span>
                             @endif
                         </div>
+                        <!-- Product Price -->
                         <div>
                             <x-label for="price" :value="__('Product Price')" />
 
-                            <x-input id="price" class="block mt-1 w-full" type="text" name="price"/>
+                            <input type="text" id="price"
+                                   class="w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                   name="price"/>
 
                             @if ($errors->has('price'))
                                 <span class="text-red-600">{{ $errors->first('price') }}</span>
                             @endif
                         </div>
+                        <!-- Product Category -->
                         <div class="mt-2">
                             <label class="inline-flex items-center">
                                 <input type="radio" name="category" value="liquid">
@@ -60,6 +64,7 @@
                         @if ($errors->has('category'))
                             <span class="text-red-600">{{ $errors->first('category') }}</span>
                         @endif
+                    <!-- Product Type -->
                         <div>
                             <x-label for="type" :value="__('Product Type')" />
 
@@ -72,6 +77,18 @@
                                 <span class="text-red-600">{{ $errors->first('type') }}</span>
                             @endif
                         </div>
+                        <!-- Product Color -->
+                        <div>
+                            <x-label for="type" :value="__('Product Color')" />
+
+                            <select name="color" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option disabled>Select color</option>
+                                <option value="red">Red</option>
+                                <option value="white">White</option>
+                                <option value="black">Black</option>
+                            </select>
+                        </div>
+                        <!-- Product Image -->
                         <div>
                             <x-label for="image" :value="__('Product Image')" />
 
