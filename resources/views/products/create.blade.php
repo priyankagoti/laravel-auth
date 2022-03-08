@@ -22,7 +22,7 @@
                         <div>
                             <x-label for="name" :value="__('Product Name')" />
 
-                            <input id="name" type="text" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500" name="name"  autofocus />
+                            <input id="name" type="text" class="" name="name"  autofocus />
 
                             @if ($errors->has('name'))
                                 <span class="text-red-600">{{ $errors->first('name') }}</span>
@@ -33,17 +33,17 @@
                         <div class="mt-4">
                             <x-label for="detail" :value="__('Product Detail')" />
 
-                            <input id="price" type="text" name="detail" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                            <input id="price" type="text" name="detail" class="" />
                             @if ($errors->has('detail'))
                                 <span class="text-red-600">{{ $errors->first('detail') }}</span>
                             @endif
                         </div>
                         <!-- Product Price -->
-                        <div>
+                        <div class="mt-4">
                             <x-label for="price" :value="__('Product Price')" />
 
                             <input type="text" id="price"
-                                   class="w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                   class=""
                                    name="price"/>
 
                             @if ($errors->has('price'))
@@ -51,48 +51,54 @@
                             @endif
                         </div>
                         <!-- Product Category -->
-                        <div class="mt-2">
-                            <label class="inline-flex items-center">
-                                <input type="radio" name="category" value="liquid">
-                                <span class="ml-2">Liquid</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="radio" name="category" value="solid">
-                                <span class="ml-2">Solid</span>
-                            </label>
+                        <div class="mt-4">
+                            <x-label for="type" :value="__('Product Category')" />
+                            <div class="flex items-center space-x-8">
+                                <label>
+                                    <input type="radio"  name="category" value="liquid">
+                                    Liquid
+                                </label>
+                                <label >
+                                    <input type="radio" name="category" value="solid">
+                                    Solid
+                                </label>
+                            </div>
+                            @if ($errors->has('category'))
+                                <span class="text-red-600">{{ $errors->first('category') }}</span>
+                            @endif
                         </div>
-                        @if ($errors->has('category'))
-                            <span class="text-red-600">{{ $errors->first('category') }}</span>
-                        @endif
-                    <!-- Product Type -->
-                        <div>
-                            <x-label for="type" :value="__('Product Type')" />
 
-                            <label><input type="checkbox" name="type[]" value="Laravel"> Laravel</label>
-                            <label><input type="checkbox" name="type[]" value="JQuery"> JQuery</label>
-                            <label><input type="checkbox" name="type[]" value="Bootstrap"> Bootstrap</label>
-                            <label><input type="checkbox" name="type[]" value="Codeigniter"> Codeigniter</label>
+                        <!-- Product Type -->
+                        <div class="mt-4">
+                            <x-label for="type" :value="__('Product Type')" />
+                            <div class="flex items-center space-x-8">
+                                <label><input type="checkbox" class="" name="type[]" value="Laravel"> Laravel</label>
+                                <label><input type="checkbox" class="" name="type[]" value="JQuery"> JQuery</label>
+                                <label><input type="checkbox" class="" name="type[]" value="Bootstrap"> Bootstrap</label>
+                                <label><input type="checkbox" class="" name="type[]" value="Codeigniter"> Codeigniter</label>
+                            </div>
+
 
                             @if ($errors->has('type'))
                                 <span class="text-red-600">{{ $errors->first('type') }}</span>
                             @endif
                         </div>
                         <!-- Product Color -->
-                        <div>
+                        <div class="mt-4">
                             <x-label for="type" :value="__('Product Color')" />
 
                             <select name="color" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                <option disabled>Select color</option>
+                                <option disabled value="" selected>Select color</option>
                                 <option value="red">Red</option>
                                 <option value="white">White</option>
                                 <option value="black">Black</option>
                             </select>
                         </div>
                         <!-- Product Image -->
-                        <div>
+                        <div class="mt-4">
                             <x-label for="image" :value="__('Product Image')" />
 
-                            <x-input id="image" class="block mt-1 w-full" type="file" name="image"/>
+                            <input type="file" id="image" class="block px-3 py-2 w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-700 focus:outline-none focus:border-transparent text-sm rounded-lg"  name="image"/>
 
                             @if ($errors->has('image'))
                                 <span class="text-red-600">{{ $errors->first('image') }}</span>
