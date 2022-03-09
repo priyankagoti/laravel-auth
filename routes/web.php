@@ -18,17 +18,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::view('/dashboard','dashboard')->middleware(['auth'])->name('dashboard');
+
+//Route::get('/dashboard', function () {
+//    return view('dashboard');
+//})->middleware(['auth'])->name('dashboard');
 
 Route::resource('products', ProductController::class);
 
 Route::get('products', [ProductController::class, 'index'])
         ->middleware(['auth'])->name('products.index');
 
-Route::get('products/create', [ProductController::class, 'create'])
-    ->middleware(['auth'])->name('products.create');
+//Route::get('products/create', [ProductController::class, 'create'])
+//    ->middleware(['auth'])->name('products.create');
+//Route::redirect('/products', '/products/create');
+
+Route::get('products/create', function (){
+    return view('products.create');
+})->middleware(['auth'])->name('products.create');
 
 Route::post('products', [ProductController::class, 'store'])
     ->middleware(['auth'])->name('products.store');
@@ -37,21 +44,13 @@ Route::get('products/{product}/edit', [ProductController::class, 'edit'])
     ->middleware(['auth'])->name('products.edit');
 
 Route::put('products/{product}/edit', [ProductController::class, 'update'])
-    ->middleware(['auth'])->name('products.update');
+    ->middleware(['auth']);
 
-Route::get('products/{product}', [ProductController::class, 'show'])
+Route::get('products/{id}', [ProductController::class, 'show'])
     ->middleware(['auth'])->name('products.show');
 
 Route::delete('products/{product}', [ProductController::class, 'destroy'])
     ->middleware(['auth'])->name('products.destroy');
 
-//Route::controller(ProductController::class)->group(function (){
-//    Route::get('products', 'index')->name('products.index');
-//    Route::get('products/create','create')->name('products.create');
-//    Route::post('products','store')->name('products.store');
-//    Route::get('products/{product}/edit','edit')->name('products.edit');
-//    Route::put('products/{product}/edit', 'update')->name('products.update');
-//    Route::get('products/{product}', 'show')->name('products.show');
-//    Route::delete('products/{product}',  'destroy')->name('products.destroy');
-//});
+
 require __DIR__.'/auth.php';

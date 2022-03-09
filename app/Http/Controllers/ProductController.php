@@ -79,9 +79,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //$collection=json_decode($product->type, true);
+
         $type_type = json_decode($product->type);
-       //$collection=$product->type;
+        
         return view('products.edit',compact('product','type_type'));
     }
 
