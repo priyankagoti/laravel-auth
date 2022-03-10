@@ -87,7 +87,7 @@
                         <div class="mt-4">
                             <x-label for="type" :value="__('Product Color')" />
 
-                            <select name="color" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <select type="select" name="color" >
                                 <option disabled value="" selected>Select color</option>
                                 <option value="red">Red</option>
                                 <option value="white">White</option>
@@ -98,7 +98,7 @@
                         <div class="mt-4">
                             <x-label for="image" :value="__('Product Image')" />
 
-                            <input type="file" id="image" class="block px-3 py-2 w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-700 focus:outline-none focus:border-transparent text-sm rounded-lg"  name="image"/>
+                            <input type="file" id="image" class="form-file"  name="image"/>
 
                             @if ($errors->has('image'))
                                 <span class="text-red-600">{{ $errors->first('image') }}</span>

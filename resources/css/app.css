@@ -29,4 +29,7 @@
     [type='radio']{
         @apply rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-500
     }
+    .form-file{
+        @apply block px-3 py-2 w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-700 focus:outline-none focus:border-transparent text-sm rounded-lg
+    }
 }

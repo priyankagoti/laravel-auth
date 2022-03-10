@@ -13,13 +13,6 @@
                         <div class="text-red-600">
                             <span>Woops! There is something wrong with your input.</span>
                         </div>
-                        {{--<div>
-                            <ul>
-                                @foreach($errors->all() as $error)
-                                    <li>{{$error}}</li>
-                                @endforeach
-                            </ul>
-                        </div>--}}
                     @endif
 
                     <form method="POST" enctype="multipart/form-data" action="/products/{{$product->id}}/edit">
@@ -46,7 +39,7 @@
                             @endif
                         </div>
 
-                        <div>
+                        <div class="mt-4">
                             <x-label for="price" :value="__('Product Price')" />
 
                             <x-input id="price" class="block mt-1 w-full" type="text" name="price" value="{{$product->price}}" />
@@ -55,21 +48,24 @@
                                 <span class="text-red-600">{{ $errors->first('price') }}</span>
                             @endif
                         </div>
-                        <div class="mt-2">
-                            <label class="inline-flex items-center">
-                                <input type="radio" name="category" value="liquid"  {{ $product->category == 'liquid' ? 'checked' : '' }}>
-                                <span class="ml-2">Liquid</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="radio" name="category" value="solid" {{ $product->category == 'solid' ? 'checked' : ''}} >
-                                <span class="ml-2">Solid</span>
-                            </label>
+                        <div class="mt-4">
+                            <x-label for="type" :value="__('Product Category')" />
+                            <div class="flex items-center space-x-8">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="category" value="liquid"  {{ $product->category == 'liquid' ? 'checked' : '' }}>
+                                    Liquid
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="category" value="solid" {{ $product->category == 'solid' ? 'checked' : ''}} >
+                                    Solid
+                                </label>
+                            </div>
+                            @if ($errors->has('category'))
+                                <span class="text-red-600">{{ $errors->first('category') }}</span>
+                            @endif
                         </div>
-                        @if ($errors->has('category'))
-                            <span class="text-red-600">{{ $errors->first('category') }}</span>
-                        @endif
 
-                        <div>
+                        <div class="mt-4">
                             <x-label for="type" :value="__('Product Type')" />
 
                             <label><input type="checkbox" name="type[]" value="Laravel"  @if (!empty($type_type) && in_array('Laravel', $type_type)) checked @endif /> Laravel</label>
@@ -80,20 +76,20 @@
                                 <span class="text-red-600">{{ $errors->first('type') }}</span>
                             @endif
                         </div>
-                        <div>
-                            <x-label for="type" :value="__('Product Color')" />
+                        <div class="mt-4">
+                            <x-label for="type" :value="__('Product Color')" class="pb-1"/>
 
-                            <select name="color" class="rounded-md w-32 h-8">
+                            <select type="select" name="color">
                                 <option disabled value="" selected>Select color</option>
                                 <option value="red" {{ $product->color == 'red' ? 'selected' : '' }}>Red</option>
                                 <option value="white" {{ $product->color == 'white' ? 'selected' : '' }}>White</option>
                                 <option value="black" {{ $product->color == 'black' ? 'selected' : '' }}>Black</option>
                             </select>
                         </div>
-                        <div>
-                            <x-label for="image" :value="__('Product Image')" />
+                        <div class="mt-4">
+                            <x-label for="image" :value="__('Product Image')" class="pb-1" />
 
-                            <x-input id="image" class="block mt-1 w-full" type="file" name="image" value="{{$product->image}}"/>
+                            <x-input id="image" class="form-file" type="file" name="image" value="{{$product->image}}"/>
 
                             @if ($errors->has('image'))
                                 <span class="text-red-600">{{ $errors->first('image') }}</span>

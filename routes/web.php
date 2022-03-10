@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,14 +25,25 @@ Route::view('/dashboard','dashboard')->middleware(['auth'])->name('dashboard');
 //    return view('dashboard');
 //})->middleware(['auth'])->name('dashboard');
 
-Route::resource('products', ProductController::class);
+//Route::resource('products', ProductController::class);
 
-Route::get('products', [ProductController::class, 'index'])
-        ->middleware(['auth'])->name('products.index');
+/*Route::domain('blog.'.env('APP_URl'))->middleware(['auth'])->group(function (){
+    Route::get('products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('products/create', function (){
+        return view('products.create');
+    })->name('products.create');
+});*/
+Route::name('admin.')->middleware(['auth'])->group(function(){
+    Route::get('/products', [ProductController::class, 'index'])
+        ->name('products.index');
+});
 
-//Route::get('products/create', [ProductController::class, 'create'])
-//    ->middleware(['auth'])->name('products.create');
-//Route::redirect('/products', '/products/create');
+
+    Route::get('/posts', function (){
+        return view('products.posts',[
+            'products'=> Product::latest()->get()
+        ]);
+    })->name('posts');
 
 Route::get('products/create', function (){
     return view('products.create');
@@ -46,11 +58,11 @@ Route::get('products/{product}/edit', [ProductController::class, 'edit'])
 Route::put('products/{product}/edit', [ProductController::class, 'update'])
     ->middleware(['auth']);
 
-Route::get('products/{id}', [ProductController::class, 'show'])
+Route::get('products/{product}/{id}/{name}', [ProductController::class, 'show'])
     ->middleware(['auth'])->name('products.show');
 
 Route::delete('products/{product}', [ProductController::class, 'destroy'])
-    ->middleware(['auth'])->name('products.destroy');
+    ->middleware(['auth'])->name('products.destroy')->where('product','[0-9]+');
 
 
 require __DIR__.'/auth.php';

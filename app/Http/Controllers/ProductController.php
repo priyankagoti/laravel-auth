@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -15,8 +17,10 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $url=route('admin.products.index');
+        $user = Auth::user();
         $products = Product::latest()->paginate(5);
-        return view('products.index',compact('products'))
+        return view('products.index',compact('products','user','url'))
             ->with('i',(request()->input('page',1)-1)*5);
     }
 
@@ -67,8 +71,12 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-
-        return view('products.show', compact('product'));
+        $user = Auth::user();
+        $url=route('products.show',[$product->id,'id'=>$user->id,'name'=>$user->name]);
+//        $userId = Auth::id();
+//        $email = Auth::user()->email;
+//        $username = Auth::user()->name;
+        return view('products.show', compact('product','user','url'));
     }
 
     /**
@@ -81,7 +89,7 @@ class ProductController extends Controller
     {
 
         $type_type = json_decode($product->type);
-        
+
         return view('products.edit',compact('product','type_type'));
     }
 
