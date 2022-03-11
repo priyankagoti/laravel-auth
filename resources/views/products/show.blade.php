@@ -14,7 +14,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="mt-4 ml-4">
-                    {{$url}}
+
                     <div>
                         <strong class="text-gray-800">User id</strong> : <span class="font-semibold text-gray-600">  {{$user->id}}</span>
                     </div>

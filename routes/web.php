@@ -58,7 +58,7 @@ Route::get('products/{product}/edit', [ProductController::class, 'edit'])
 Route::put('products/{product}/edit', [ProductController::class, 'update'])
     ->middleware(['auth']);
 
-Route::get('products/{product}/{id}/{name}', [ProductController::class, 'show'])
+Route::get('users/{user}/products/{product}', [ProductController::class, 'show'])
     ->middleware(['auth'])->name('products.show');
 
 Route::delete('products/{product}', [ProductController::class, 'destroy'])

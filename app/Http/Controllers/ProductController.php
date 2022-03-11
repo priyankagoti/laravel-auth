@@ -69,14 +69,14 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show( Product $product)
     {
-        $user = Auth::user();
-        $url=route('products.show',[$product->id,'id'=>$user->id,'name'=>$user->name]);
+       $user = Auth::user();
+       // $url=route('products.show',[$product->id,'id'=>$user->id,'name'=>$user->name]);
 //        $userId = Auth::id();
 //        $email = Auth::user()->email;
 //        $username = Auth::user()->name;
-        return view('products.show', compact('product','user','url'));
+        return view('products.show', ['user'=>$user,'product'=>$product]);
     }
 
     /**
