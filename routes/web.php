@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProductController;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,23 +29,24 @@ Route::view('/dashboard','dashboard')->middleware(['auth'])->name('dashboard');
 
 //Route::resource('products', ProductController::class);
 
-/*Route::domain('blog.'.env('APP_URl'))->middleware(['auth'])->group(function (){
-    Route::get('products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('products/create', function (){
-        return view('products.create');
-    })->name('products.create');
-});*/
 Route::name('admin.')->middleware(['auth'])->group(function(){
     Route::get('/products', [ProductController::class, 'index'])
         ->name('products.index');
 });
 
+Route::get('/posts', function (){
+    return view('products.posts',[
+        'products'=> Product::latest()->get()
+    ]);
+})->name('posts');
 
-    Route::get('/posts', function (){
-        return view('products.posts',[
-            'products'=> Product::latest()->get()
+    Route::get('/posts/{product}', function (Product $product){
+        return view('products.post',[
+            'product'=> $product
         ]);
-    })->name('posts');
+    })->name('posts.post')->missing(function (Request $request) {
+        return Redirect::route('posts');
+    });
 
 Route::get('products/create', function (){
     return view('products.create');
@@ -59,7 +62,9 @@ Route::put('products/{product}/edit', [ProductController::class, 'update'])
     ->middleware(['auth']);
 
 Route::get('users/{user}/products/{product}', [ProductController::class, 'show'])
-    ->middleware(['auth'])->name('products.show');
+    ->middleware(['auth'])->name('products.show') ->missing(function (Request $request) {
+        return Redirect::route('admin.products.index');
+    });
 
 Route::delete('products/{product}', [ProductController::class, 'destroy'])
     ->middleware(['auth'])->name('products.destroy')->where('product','[0-9]+');

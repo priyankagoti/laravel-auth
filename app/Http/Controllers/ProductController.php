@@ -58,7 +58,7 @@ class ProductController extends Controller
 
         Product::create($input);
 
-        return redirect()-> route('products.index')
+        return redirect()-> route('admin.products.index')
             ->with('success','product created successfully');
 
     }
@@ -69,14 +69,15 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show( Product $product)
+    public function show($userID,$product)
     {
        $user = Auth::user();
+       $product = Product::find($product);
        // $url=route('products.show',[$product->id,'id'=>$user->id,'name'=>$user->name]);
 //        $userId = Auth::id();
 //        $email = Auth::user()->email;
 //        $username = Auth::user()->name;
-        return view('products.show', ['user'=>$user,'product'=>$product]);
+        return view('products.show', compact('user','product',));
     }
 
     /**
@@ -120,7 +121,7 @@ class ProductController extends Controller
         $input['type'] = json_encode($request->type);
         $product->update($input);
 
-        return redirect()->route('products.index')
+        return redirect()->route('admin.products.index')
             ->with('success','product updated successfully.');
     }
 
