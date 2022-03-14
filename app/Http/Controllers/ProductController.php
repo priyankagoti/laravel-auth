@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,12 +19,22 @@ class ProductController extends Controller
     public function index()
     {
         $url=route('admin.products.index');
-        $user = Auth::user();
-        $products = Product::latest()->paginate(5);
+        $authId = Auth::user()->id;
+       // dd($authId);
+        $user = User::find($authId);
+       // dd($user);
+       // $user = Auth::user();
+       // $products = Product::latest()->paginate(5);
+        $products=$user->products;
+        //dd($products);
         return view('products.index',compact('products','user','url'))
             ->with('i',(request()->input('page',1)-1)*5);
     }
 
+    public function productIndex(){
+        //return Product::latest()->get();
+        return ProductResource::collection(Product::latest()->get());
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -54,6 +65,7 @@ class ProductController extends Controller
         $request->image->storeAs('images', $imageName);
         $input['image']=$imageName;
         $input['type'] = json_encode($request->type);
+        $input['user_id']=Auth::user()->id;
        // $input['type']=$request->type->json_encode('type');
 
         Product::create($input);
@@ -69,15 +81,13 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show($userID,$product)
+    public function show(Product $product)
     {
-       $user = Auth::user();
-       $product = Product::find($product);
-       // $url=route('products.show',[$product->id,'id'=>$user->id,'name'=>$user->name]);
-//        $userId = Auth::id();
-//        $email = Auth::user()->email;
-//        $username = Auth::user()->name;
-        return view('products.show', compact('user','product',));
+        //dd($product);
+      //$user = Auth::user();
+
+       //$product = Product::find($id);
+        return view('products.show', compact('product'));
     }
 
     /**

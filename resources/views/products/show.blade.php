@@ -13,7 +13,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="mt-4 ml-4">
+                {{--<div class="mt-4 ml-4">
 
                     <div>
                         <strong class="text-gray-800">User id</strong> : <span class="font-semibold text-gray-600">  {{$user->id}}</span>
@@ -24,7 +24,7 @@
                     <div>
                         <strong class="text-gray-800">User Name</strong> : <span class="font-semibold text-gray-600">  {{$user->name}}</span>
                     </div>
-                </div>
+                </div>--}}
 
                 <div class="p-6 bg-white border-b border-gray-200 space-y-1">
                     <div>

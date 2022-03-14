@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -34,19 +35,20 @@ Route::name('admin.')->middleware(['auth'])->group(function(){
         ->name('products.index');
 });
 
-Route::get('/posts', function (){
+Route::get('/posts', function (User $user){
+    $user = \Illuminate\Support\Facades\Auth::user();
     return view('products.posts',[
-        'products'=> Product::latest()->get()
+        'products'=> $user->products
     ]);
-})->name('posts');
+})->middleware(['auth'])->name('posts');
 
-    Route::get('/posts/{product}', function (Product $product){
-        return view('products.post',[
+Route::get('/posts/{product}', function (Product $product){
+    return view('products.post',[
             'product'=> $product
-        ]);
-    })->name('posts.post')->missing(function (Request $request) {
+    ]);
+})->middleware(['auth'])->name('posts.post');/*->missing(function (Request $request) {
         return Redirect::route('posts');
-    });
+    });*/
 
 Route::get('products/create', function (){
     return view('products.create');
@@ -61,13 +63,15 @@ Route::get('products/{product}/edit', [ProductController::class, 'edit'])
 Route::put('products/{product}/edit', [ProductController::class, 'update'])
     ->middleware(['auth']);
 
-Route::get('users/{user}/products/{product}', [ProductController::class, 'show'])
-    ->middleware(['auth'])->name('products.show') ->missing(function (Request $request) {
+Route::get('products/{product}', [ProductController::class, 'show'])
+    ->middleware(['auth'])->name('products.show')->missing(function (Request $request) {
         return Redirect::route('admin.products.index');
     });
 
 Route::delete('products/{product}', [ProductController::class, 'destroy'])
     ->middleware(['auth'])->name('products.destroy')->where('product','[0-9]+');
 
-
+Route::fallback(function () {
+    return view('dashboard');
+});
 require __DIR__.'/auth.php';

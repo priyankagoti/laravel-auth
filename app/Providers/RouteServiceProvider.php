@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
@@ -36,8 +37,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Route::model('product', Product::class);
-
+        //Route::model('product', Product::class);
+        //JsonResource::withoutWrapping();
         $this->configureRateLimiting();
 
         $this->routes(function () {
@@ -50,6 +51,8 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
+
+
     }
 
     /**
@@ -61,6 +64,10 @@ class RouteServiceProvider extends ServiceProvider
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+        });
+
+        RateLimiter::for('custom_limit',function (Request $request){
+           return Limit::perMinute(60);
         });
     }
 }

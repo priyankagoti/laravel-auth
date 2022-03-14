@@ -10,8 +10,17 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable=[
-        'name','detail','price','category','type','color','image'
+        'name','detail','price','category','type','color','image','user_id'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+   /* public function setUserIdAttribute($value)
+    {
+        $this->attributes['user_id'] = Auth::user()->id;
+    }*/
     /*public function setTypeAttribute($value)
     {
         $this->attributes['type'] = json_encode($value);
