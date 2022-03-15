@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 class ProductController extends Controller
 {
@@ -16,10 +17,16 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $url=route('admin.products.index');
         $authId = Auth::user()->id;
+        $token = $request->session()->token();
+        //$token = $request->header('X-CSRF-TOKEN');
+        //dd($token);
+        $route = Route::current();
+        $name = Route::currentRouteName();
+        $action = Route::currentRouteAction();
        // dd($authId);
         $user = User::find($authId);
        // dd($user);
@@ -27,7 +34,7 @@ class ProductController extends Controller
        // $products = Product::latest()->paginate(5);
         $products=$user->products;
         //dd($products);
-        return view('products.index',compact('products','user','url'))
+        return view('products.index',compact('products','user','url','route','name','action','token'))
             ->with('i',(request()->input('page',1)-1)*5);
     }
 
