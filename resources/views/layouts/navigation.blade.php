@@ -22,6 +22,21 @@
                     <x-nav-link :href="route('posts')" :active="request()->routeIs('posts')">
                         {{ __('Posts') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('countries.index')" :active="request()->routeIs('countries.index')">
+                        {{ __('Countries') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('cities.index')" :active="request()->routeIs('cities.index')">
+                        {{ __('Cities') }}
+                    </x-nav-link>
+                   {{-- <x-nav-link :href="route('posts')" :active="request()->routeIs('posts')">
+                        {{ __('About Us') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('posts')" :active="request()->routeIs('posts')">
+                        {{ __('Contact Us') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('posts')" :active="request()->routeIs('posts')">
+                        {{ __('Terms & Conditions') }}
+                    </x-nav-link>--}}
                 </div>
             </div>
 

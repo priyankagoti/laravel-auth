@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\InvokableController;
 use App\Http\Controllers\ProductController;
 use App\Models\Product;
 use App\Models\User;
@@ -25,12 +28,6 @@ Route::get('/', function () {
 
 Route::view('/dashboard','dashboard')->middleware(['auth'])->name('dashboard');
 
-//Route::get('/dashboard', function () {
-//    return view('dashboard');
-//})->middleware(['auth'])->name('dashboard');
-
-//Route::resource('products', ProductController::class);
-
 Route::name('admin.')->middleware(['auth'])->group(function(){
     Route::get('/products', [ProductController::class, 'index'])
         ->name('products.index');
@@ -43,16 +40,14 @@ Route::get('/posts', function (User $user){
     ]);
 })->middleware(['auth'])->name('posts');
 
-Route::middleware(['auth','checkType'])->group(function (){
+Route::middleware(['auth'])->group(function (){
     Route::get('/posts/{product}', function (Product $product){
         return view('products.post',[
             'product'=> $product
         ]);
     })->name('posts.post');
 
-    Route::get('products/create', function (){
-        return view('products.create');
-    })->name('products.create')->withoutMiddleware('checkType');
+    Route::get('products/create', [ProductController::class,'create'])->name('products.create');
 
     Route::post('products', [ProductController::class, 'store'])
         ->name('products.store');
@@ -72,9 +67,11 @@ Route::middleware(['auth','checkType'])->group(function (){
         ->name('products.destroy')->where('product','[0-9]+');
 });
 
+//Route::get('/{page}',[InvokableController::class,'__invoke']);
 
+Route::resource('countries',CountryController::class);
+Route::resource('cities',CityController::class);
 
-//Route::match(['get', 'delete'], 'products/{product}',[ProductController::class,'show','destroy']);
 Route::fallback(function () {
     return view('dashboard');
 });

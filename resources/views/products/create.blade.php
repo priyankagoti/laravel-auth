@@ -105,7 +105,33 @@
                             @endif
                         </div>
 
+                        <!-- Product Country -->
+                        <div class="mt-4">
+                            <x-label for="type" :value="__('Product Country')" />
 
+                            <select type="select" name="country_name" >
+                                <option disabled value="" selected>Select country</option>
+                                @foreach($countries as $country)
+                                <option value="{{$country->id}}">{{$country->name}}{{$country->cities}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Product City -->
+                        <div class="mt-4">
+                            <x-label for="type" :value="__('Product City')" />
+
+                            <select type="select" name="city_name">
+                                <option disabled value="" selected>Select city</option>
+                                @foreach($countries as $country)
+                                    @foreach($country->cities as $city)
+                                        {{--@if($city->country_id===$product->country_name)
+                                        <option value="{{$city->name}}">{{$city->name}}</option>
+                                        @endif--}}
+                                    @endforeach
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="flex items-center justify-end mt-4">
 
                             <x-button class="ml-4">

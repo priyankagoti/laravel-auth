@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductResource;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,13 +19,23 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    //middleware in controller.
+    /*public function __construct(){
+        $this->middleware(function($request,$next){
+            if($request->type!=2){
+                return response()->json('wrong type');
+            }
+            return $request($next);
+        });
+    }*/
+
     public function index(Request $request)
     {
         $url=route('admin.products.index');
         $authId = Auth::user()->id;
         $token = $request->session()->token();
         //$token = $request->header('X-CSRF-TOKEN');
-        //dd($token);
+        // dd($token);
         $route = Route::current();
         $name = Route::currentRouteName();
         $action = Route::currentRouteAction();
@@ -47,9 +59,12 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('products.create');
+        $countries=Country::latest()->get();
+        $product=$request->all();
+        //$cities=City::where('country_id',$country_id);
+        return view('products.create',compact('countries','product'));
     }
 
     /**
@@ -73,8 +88,6 @@ class ProductController extends Controller
         $input['image']=$imageName;
         $input['type'] = json_encode($request->type);
         $input['user_id']=Auth::user()->id;
-       // $input['type']=$request->type->json_encode('type');
-
         Product::create($input);
 
         return redirect()-> route('admin.products.index')
