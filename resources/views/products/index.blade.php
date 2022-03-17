@@ -24,14 +24,17 @@
             <div class="bg-white  shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
-
-                    <div class="w-full overflow-auto space-y-2">
+                   {{-- @foreach($contentTypes as $type)
+                        <p>{{$type}}</p>
+                    @endforeach--}}
+                    <P>{{$contentTypes}}</P>
+                    {{--<div class="w-full overflow-auto space-y-2">
                         <p>{{$token}}dfgd</p>
                         <p>{{$url}}</p>
                         <p>{{json_encode($route)}}</p>
                         <p>{{$name}}</p>
                         <p>{{$action}}</p>
-                    </div>
+                    </div>--}}
 
 
 
@@ -40,7 +43,7 @@
                             <span>{{$message}}</span>
                         </div>
                     @endif
-                    <table>
+                    <table class="">
                         <tr>
                             <th>No</th>
                             <th>Product Image</th>
@@ -53,7 +56,7 @@
                         </tr>
                         @foreach($products as $product)
                         <tr>
-                            <td>{{$product->user_id}}</td>
+                            <td>{{$loop->index+1}}</td>
                             <td><img class="w-16 h-16 object-cover rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt=""></td>
                             <td>{{$product->name}}</td>
                             <td>{{$product->detail}}</td>

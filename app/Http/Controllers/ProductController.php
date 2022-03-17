@@ -31,7 +31,13 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $url=route('admin.products.index');
+        if ($request->accepts(['text/html', 'application/json'])) {
+            $contentTypes='TRUE';
+        }
+        else{
+            $contentTypes='false';
+        }
+
         $authId = Auth::user()->id;
         $token = $request->session()->token();
         //$token = $request->header('X-CSRF-TOKEN');
@@ -41,12 +47,9 @@ class ProductController extends Controller
         $action = Route::currentRouteAction();
        // dd($authId);
         $user = User::find($authId);
-       // dd($user);
-       // $user = Auth::user();
-       // $products = Product::latest()->paginate(5);
         $products=$user->products;
         //dd($products);
-        return view('products.index',compact('products','user','url','route','name','action','token'))
+        return view('products.index',compact('products','user','contentTypes','route','name','action','token'))
             ->with('i',(request()->input('page',1)-1)*5);
     }
 
@@ -64,7 +67,7 @@ class ProductController extends Controller
         $countries=Country::latest()->get();
         $product=$request->all();
         //$cities=City::where('country_id',$country_id);
-        return view('products.create',compact('countries','product'));
+        return view('products.create',compact('countries','product','request'));
     }
 
     /**
@@ -83,6 +86,8 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
         $input = $request->all();
+        //$input = $request->except(['name','detail']);
+
         $imageName = time().'.'.$request->image->extension();
         $request->image->storeAs('images', $imageName);
         $input['image']=$imageName;
@@ -90,7 +95,7 @@ class ProductController extends Controller
         $input['user_id']=Auth::user()->id;
         Product::create($input);
 
-        return redirect()-> route('admin.products.index')
+        return redirect()-> route('products.index')
             ->with('success','product created successfully');
 
     }

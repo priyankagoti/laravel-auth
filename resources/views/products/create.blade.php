@@ -7,14 +7,14 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white  shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     @if($errors->any())
                         <div class="text-red-600">
                             <span>Woops! There is something wrong with your input.</span>
                         </div>
                     @endif
-
+                    {{--<div>{{$request}}</div>--}}
                     <form method="POST" enctype="multipart/form-data" action="{{ route('products.store') }}">
                     @csrf
 
@@ -123,13 +123,15 @@
 
                             <select type="select" name="city_name">
                                 <option disabled value="" selected>Select city</option>
-                                @foreach($countries as $country)
+                                <option value="Surat">Surat</option>
+                                <option value="Ahmedabad">Ahmedabad</option>
+                               {{-- @foreach($countries as $country)
                                     @foreach($country->cities as $city)
-                                        {{--@if($city->country_id===$product->country_name)
+                                        --}}{{--@if($city->country_id===$product->country_name)
                                         <option value="{{$city->name}}">{{$city->name}}</option>
-                                        @endif--}}
+                                        @endif--}}{{--
                                     @endforeach
-                                @endforeach
+                                @endforeach--}}
                             </select>
                         </div>
                         <div class="flex items-center justify-end mt-4">

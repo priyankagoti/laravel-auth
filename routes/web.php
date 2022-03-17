@@ -4,10 +4,8 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\InvokableController;
 use App\Http\Controllers\ProductController;
-use App\Models\Product;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -28,39 +26,26 @@ Route::get('/', function () {
 
 Route::view('/dashboard','dashboard')->middleware(['auth'])->name('dashboard');
 
-Route::name('admin.')->middleware(['auth'])->group(function(){
+/*Route::name('admin.')->middleware(['auth'])->group(function(){
     Route::get('/products', [ProductController::class, 'index'])
         ->name('products.index');
-});
+});*/
 
-Route::get('/posts', function (User $user){
-    $user = Auth::user();
-    return view('products.posts',[
-        'products'=> $user->products
-    ]);
-})->middleware(['auth'])->name('posts');
 
 Route::middleware(['auth'])->group(function (){
-    Route::get('/posts/{product}', function (Product $product){
-        return view('products.post',[
-            'product'=> $product
-        ]);
-    })->name('posts.post');
-
-    Route::get('products/create', [ProductController::class,'create'])->name('products.create');
-
-    Route::post('products', [ProductController::class, 'store'])
+    Route::get('/products', [ProductController::class, 'index'])
+        ->name('products.index');
+    Route::get('products/create', [ProductController::class,'create'])
+        ->name('products.create');
+    Route::post('/products', [ProductController::class, 'store'])
         ->name('products.store');
-
     Route::get('products/{product}/edit', [ProductController::class, 'edit'])
         ->name('products.edit');
-
     Route::put('products/{product}/edit', [ProductController::class, 'update'])
         ->middleware(['auth']);
-
     Route::get('products/{product}', [ProductController::class, 'show'])
         ->name('products.show')->missing(function (Request $request) {
-            return Redirect::route('admin.products.index');
+            return Redirect::route('products.index');
         });
 
     Route::delete('products/{product}', [ProductController::class, 'destroy'])
