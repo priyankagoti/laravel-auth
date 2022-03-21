@@ -27,6 +27,7 @@
                    {{-- @foreach($contentTypes as $type)
                         <p>{{$type}}</p>
                     @endforeach--}}
+                   {{-- <p>{{$url}}</p>--}}
                     <P>{{$contentTypes}}</P>
                     {{--<div class="w-full overflow-auto space-y-2">
                         <p>{{$token}}dfgd</p>
@@ -69,10 +70,15 @@
                             </td>
                             <td>{{$product->color}}</td>
                             <td class="w-auto px-6">
-                                <form method="POST" action="{{ route('products.destroy',$product->id) }}">
+                                <form method="POST" action="{{ route('products.destroy',[$product]) }}">
 
                                     <div class="flex items-center justify-end space-x-8">
-                                        <a href="{{route('products.show',['product'=>$product->id])}}"
+                                        <a href="{{route('products.download',$product->id)}}"
+                                           class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                        >
+                                            Download Image
+                                        </a>
+                                        <a href="{{route('products.show',$product->id)}}"
                                            class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                         >
                                             Show

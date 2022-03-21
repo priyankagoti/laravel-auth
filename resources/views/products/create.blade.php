@@ -18,11 +18,25 @@
                     <form method="POST" enctype="multipart/form-data" action="{{ route('products.store') }}">
                     @csrf
 
+                        <div >
+                            <x-label for="createdDate" :value="__('Created Date')" />
+
+                            <input type="date" class="" name="createdDate">
+
+
+                        </div>
+                        <div class="mt-4">
+                            <x-label for="bool" :value="__('Check Box')" />
+
+                            <label><input type="checkbox" class="" name="bool"> Check Box</label>
+
+
+                        </div>
                         <!--Product Name -->
-                        <div>
+                        <div class="mt-4">
                             <x-label for="name" :value="__('Product Name')" />
 
-                            <input id="name" type="text" class="" name="name"  autofocus />
+                            <input id="name" type="text" class="" name="name" value="{{old('name')}}"  autofocus />
 
                             @if ($errors->has('name'))
                                 <span class="text-red-600">{{ $errors->first('name') }}</span>
@@ -33,7 +47,7 @@
                         <div class="mt-4">
                             <x-label for="detail" :value="__('Product Detail')" />
 
-                            <input id="price" type="text" name="detail" class="" />
+                            <input id="price" type="text" name="detail" class="" value="{{old('detail')}}"/>
                             @if ($errors->has('detail'))
                                 <span class="text-red-600">{{ $errors->first('detail') }}</span>
                             @endif
@@ -44,7 +58,8 @@
 
                             <input type="text" id="price"
                                    class=""
-                                   name="price"/>
+                                   name="price"
+                                   value="{{old('price')}}"/>
 
                             @if ($errors->has('price'))
                                 <span class="text-red-600">{{ $errors->first('price') }}</span>

@@ -31,6 +31,7 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+        //dd($request->session());
         if ($request->accepts(['text/html', 'application/json'])) {
             $contentTypes='TRUE';
         }
@@ -40,15 +41,11 @@ class ProductController extends Controller
 
         $authId = Auth::user()->id;
         $token = $request->session()->token();
-        //$token = $request->header('X-CSRF-TOKEN');
-        // dd($token);
         $route = Route::current();
         $name = Route::currentRouteName();
         $action = Route::currentRouteAction();
-       // dd($authId);
         $user = User::find($authId);
         $products=$user->products;
-        //dd($products);
         return view('products.index',compact('products','user','contentTypes','route','name','action','token'))
             ->with('i',(request()->input('page',1)-1)*5);
     }
@@ -85,8 +82,15 @@ class ProductController extends Controller
             'category'=>'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
-        $input = $request->all();
-        //$input = $request->except(['name','detail']);
+
+       // $request->mergeIfMissing(['votes'=>23]);
+       // $request->flash();
+        $input=$request->all();
+        //$request->all();
+        //$input=$request->cookie('name');
+        //$file = $request->image->store('images');
+        //return redirect('/products')->withInput();
+      // dd($file);
 
         $imageName = time().'.'.$request->image->extension();
         $request->image->storeAs('images', $imageName);
@@ -156,8 +160,11 @@ class ProductController extends Controller
         $input['type'] = json_encode($request->type);
         $product->update($input);
 
-        return redirect()->route('admin.products.index')
+        return redirect()->route('products.index')
             ->with('success','product updated successfully.');
+        //return redirect()->action([CityController::class,'index']);
+        //return redirect()->away('https://www.youtube.com');
+       // return response()->json($product,200);
     }
 
     /**
@@ -173,5 +180,12 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('products.index')
             ->with('success','product deleted successfully');
+    }
+
+    public function downloadImage(Product $product){
+
+        $image_path=public_path().'/storage/images/'.$product->image;
+        //$image=public_path().'/storage/images/'.$product->image;
+        return response()->download($image_path);
     }
 }

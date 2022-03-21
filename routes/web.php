@@ -41,12 +41,13 @@ Route::middleware(['auth'])->group(function (){
         ->name('products.store');
     Route::get('products/{product}/edit', [ProductController::class, 'edit'])
         ->name('products.edit');
-    Route::put('products/{product}/edit', [ProductController::class, 'update'])
-        ->middleware(['auth']);
+    Route::put('products/{product}/edit', [ProductController::class, 'update']);
+
     Route::get('products/{product}', [ProductController::class, 'show'])
-        ->name('products.show')->missing(function (Request $request) {
-            return Redirect::route('products.index');
-        });
+        ->name('products.show');
+
+    Route::get('products/download/{product}',[ProductController::class,'downloadImage'])
+        ->name('products.download');
 
     Route::delete('products/{product}', [ProductController::class, 'destroy'])
         ->name('products.destroy')->where('product','[0-9]+');
