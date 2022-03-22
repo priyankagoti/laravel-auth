@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function (){
     Route::get('products/download/{product}',[ProductController::class,'downloadImage'])
         ->name('products.download');
 
+    Route::get('products/download-stream',[ProductController::class,'downloadStream'])
+        ->name('products-stream.download');
     Route::delete('products/{product}', [ProductController::class, 'destroy'])
         ->name('products.destroy')->where('product','[0-9]+');
 });

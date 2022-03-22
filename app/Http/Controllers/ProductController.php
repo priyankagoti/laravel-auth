@@ -188,4 +188,11 @@ class ProductController extends Controller
         //$image=public_path().'/storage/images/'.$product->image;
         return response()->download($image_path);
     }
+
+    public function downloadStream(){
+        //$products = Product::all();
+        return response()->streamDownload(function (){
+            Product::all();
+        }, 'laravel-readme.pdf');
+    }
 }
