@@ -49,7 +49,7 @@
                     >
                         Download Stream
                     </a>--}}
-{{--
+                {{--
                     <script>
 
                        var app = {{Js::from($products)}} ;
@@ -61,7 +61,7 @@
                             Hello, {{ $products }}.
                         </div>
                     @endverbatim
-
+                    @each('products.alert',$products,'p')
                     <table class="">
                         <tr>
                             <th>No</th>
@@ -74,10 +74,13 @@
                             <th>Actions</th>
                         </tr>
                         @foreach($products as $product)
+                            @once
+                                <div><p>{{$loop->count}}</p></div>
+                            @endonce
                         <tr>
                             <td>{{$loop->index+1}}</td>
                             <td><img class="w-16 h-16 object-cover rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt=""></td>
-                            <td>{{$product->name}}</td>
+                            <td @class(['text-gray-600'=>$loop->even])>{{$product->name}}{{$loop->even}}</td>
                             <td>{{$product->detail}}</td>
                             <td>{{$product->price}}</td>
                             <td>
