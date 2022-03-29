@@ -11,16 +11,16 @@
                 <div class="p-6 bg-white border-b border-gray-200 ">
                     <p class=" bg-blue-100 text-green-600">You're logged in!</p>
                 </div>
-                <?php $bool=true ?>
+                @php
+                    $bool=true
+                @endphp
+
                 <p>{{$bool}}</p>
-               {{-- @include("products.alert",["width"=>'2/4',"type"=>'green','content'=>'this is success statement'])
-                @includeWhen($bool,"products.alert",["width"=>'2/4',"type"=>'green','content'=>'this is true statement'])
-                @includeUnless($bool,"products.alert",["width"=>'2/4',"type"=>'green','content'=>'this is  false statement'])
-                @includeIf('view.name', ['status' => 'complete'])--}}
-                {{--@include('products.alert',['width'=>'2/4','color'=>'red','content'=>'this is danger statement'])
-                @include('products.alert',['width'=>'2/5','color'=>'blue','content'=>'this is blue statement'])
-                @include('products.alert',['width'=>'2/6','color'=>'gray','content'=>'this is blue statement'])
-                @include('products.alert',['width'=>'2/7','color'=>'green','content'=>'this is blue statement'])--}}
+                {{--@include('products.alert', ['width' => '2/3','color'=>'red','content'=>'This is dangerous'])--}}
+
+                <x-card title='Card title 1'/>
+               <x-card title='Card title 2'/>
+               <x-card title='Card title 3'/>
             </div>
         </div>
     </div>
