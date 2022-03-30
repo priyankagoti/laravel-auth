@@ -61,7 +61,7 @@
                             Hello, {{ $products }}.
                         </div>
                     @endverbatim
-                    @each('products.alert',$products,'p')
+                    {{--@each('products.alert',$products,'p')--}}
                     <table class="">
                         <tr>
                             <th>No</th>

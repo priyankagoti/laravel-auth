@@ -17,7 +17,9 @@ class CountryController extends Controller
         $countries= Country::latest()->get();
       return view('countries.index',compact('countries'));
     }
-
+    public function allCountry(){
+        return Country::latest()->get();
+    }
     /**
      * Show the form for creating a new resource.
      *
