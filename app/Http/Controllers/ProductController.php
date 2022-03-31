@@ -110,12 +110,8 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Request $request,Product $product)
     {
-        //dd($product);
-      //$user = Auth::user();
-
-       //$product = Product::find($id);
         return view('products.show', compact('product'));
     }
 

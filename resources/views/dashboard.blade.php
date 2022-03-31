@@ -28,7 +28,12 @@
 
                 <p>{{$bool}}</p>
                 {{--@include('products.alert', ['width' => '2/3','color'=>'red','content'=>'This is dangerous'])--}}
+                <x-alert><h1>rgdfgdg</h1></x-alert>
 
+                <x-include>
+                    <p>fgdfgdf</p>
+                    <x-include.header></x-include.header>
+                </x-include>
                 <x-card color="red">
                     <x-slot name="title"  class="text-gray-400">
                         custom title
@@ -37,12 +42,7 @@
                         <p>dfgdfgfd</p>
                     </x-slot>
                 </x-card>
-                <x-alert><h1>rgdfgdg</h1></x-alert>
 
-                <x-include>
-                    <p>fgdfgdf</p>
-                    <x-include.header></x-include.header>
-                </x-include>
 
             </div>
         </div>
