@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 class ProductController extends Controller
 {
@@ -38,7 +39,7 @@ class ProductController extends Controller
         else{
             $contentTypes='false';
         }
-
+        $sessionVal = $request->session()->get('_token','fsdf');
         $authId = Auth::user()->id;
         $token = $request->session()->token();
         $route = Route::current();
@@ -46,7 +47,7 @@ class ProductController extends Controller
         $action = Route::currentRouteAction();
         $user = User::find($authId);
         $products=$user->products;
-        return view('products.index',compact('products','user','contentTypes','route','name','action','token'))
+        return view('products.index',compact('products','user','contentTypes','route','name','action','token','sessionVal'))
             ->with('i',(request()->input('page',1)-1)*5);
     }
 

@@ -29,6 +29,7 @@
                     @endforeach--}}
                    {{-- <p>{{$url}}</p>--}}
                     <P>{{$contentTypes}}</P>
+                    <P>{{$sessionVal}}</P>
                     {{--<div class="w-full overflow-auto space-y-2">
                         <p>{{$token}}dfgd</p>
                         <p>{{$url}}</p>
@@ -52,6 +53,8 @@
                             Hello, {{ $products }}.
                         </div>
                     @endverbatim
+
+                    <p>{{Session::get('name')}}sdfdsf</p>
                     {{--@each('products.alert',$products,'p')--}}
                     <table class="">
                         <tr>
