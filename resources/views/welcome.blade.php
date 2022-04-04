@@ -49,7 +49,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2">
                         <div class="p-6">
                             <h1>Welcome page</h1>
-                            <p>{{$name}}</p>
+                            {{--<p>{{$data}}</p>--}}
+                            <p>{{$name}}{{$detail}}</p>
+                            <p>{{session()->get('name')}}</p>
+                            <p>{{session('name')}}</p>
+                            <p>{{session()->get('detail')}}</p>
                         </div>
 
                         <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">

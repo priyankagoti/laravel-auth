@@ -40,7 +40,7 @@
 
 
 
-                    @if($message=Session::get('success'))
+                    @if($message=session()->get('success'))
                         <div class="text-green-600">
                             <span>{{$message}}</span>
                         </div>
@@ -54,7 +54,7 @@
                         </div>
                     @endverbatim
 
-                    <p>{{Session::get('name')}}sdfdsf</p>
+                    <p>{{session()->get('name')}}</p>
                     {{--@each('products.alert',$products,'p')--}}
                     <table class="">
                         <tr>
@@ -73,10 +73,12 @@
                             @endonce
                         <tr>
                             <td>{{$loop->index+1}}
+{{--
                                 <p>URL : {{action([\App\Http\Controllers\ProductController::class,'index'],['id'=>$product->id])}}</p>
+--}}
                             </td>
                             <td><img class="w-16 h-16 object-cover rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt=""></td>
-                            <td @class(['text-gray-600'=>$loop->even])>{{$product->name}}{{$loop->even}}</td>
+                            <td @class(['text-gray-600'=>$loop->even])>{{$product->name}}</td>
                             <td>{{$product->detail}}</td>
                             <td>{{$product->price}}</td>
                             <td>

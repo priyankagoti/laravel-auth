@@ -100,8 +100,11 @@ class ProductController extends Controller
         $input['user_id']=Auth::user()->id;
         Product::create($input);
 
+        //$request->session()->flash('success','Product created successfully....');
+
         return redirect()-> route('products.index')
             ->with('success','product created successfully');
+
 
     }
 
