@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\City;
 use App\Models\Country;
@@ -33,6 +34,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         //dd($request->session());
+        //print_r('index get');
         if ($request->accepts(['text/html', 'application/json'])) {
             $contentTypes='TRUE';
         }
@@ -74,18 +76,23 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $request->validate([
-            'name'=>'required',
+        //dd($request);
+        /*$request->validate([
+            'name'=>'bail|required|unique:products|max:255',
             'detail'=>'required',
             'price'=>'required',
             'category'=>'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-        ]);
-
+        ]);*/
+       /* $request->whenHas('color',function ($input){
+            dd($input);
+        });*/
        // $request->mergeIfMissing(['votes'=>23]);
        // $request->flash();
+         $validate=$request->validate();
+         //dd($validate);
         $input=$request->all();
         //$request->all();
         //$input=$request->cookie('name');
@@ -98,12 +105,13 @@ class ProductController extends Controller
         $input['image']=$imageName;
         $input['type'] = json_encode($request->type);
         $input['user_id']=Auth::user()->id;
+        //dd($input);
         Product::create($input);
 
         //$request->session()->flash('success','Product created successfully....');
 
         return redirect()-> route('products.index')
-            ->with('success','product created successfully');
+            ->with(['success'=>'product created successfully','input'=>$input]);
 
 
     }
@@ -114,7 +122,7 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request,Product $product)
+    public function show(Product $product)
     {
         return view('products.show', compact('product'));
     }

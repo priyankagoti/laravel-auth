@@ -37,10 +37,12 @@
                             <x-label for="name" :value="__('Product Name')" />
 
                             <input id="name" type="text" class="" name="name" value="{{old('name')}}"  autofocus />
-
-                            @if ($errors->has('name'))
+                            @error('name')
+                            <span class="text-red-600">{{ $message }}</span>
+                            @enderror
+                            {{--@if ($errors->has('name'))
                                 <span class="text-red-600">{{ $errors->first('name') }}</span>
-                            @endif
+                            @endif--}}
                         </div>
 
                         <!-- Product Detail -->
@@ -140,13 +142,7 @@
                                 <option disabled value="" selected>Select city</option>
                                 <option value="Surat">Surat</option>
                                 <option value="Ahmedabad">Ahmedabad</option>
-                               {{-- @foreach($countries as $country)
-                                    @foreach($country->cities as $city)
-                                        --}}{{--@if($city->country_id===$product->country_name)
-                                        <option value="{{$city->name}}">{{$city->name}}</option>
-                                        @endif--}}{{--
-                                    @endforeach
-                                @endforeach--}}
+
                             </select>
                         </div>
                         <div class="flex items-center justify-end mt-4">
