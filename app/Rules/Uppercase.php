@@ -2,15 +2,17 @@
 
 namespace App\Rules;
 
+use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
 
-class Uppercase implements Rule
+class Uppercase implements Rule,DataAwareRule
 {
     /**
      * Create a new rule instance.
      *
      * @return void
      */
+     protected $data=[];
     public function __construct()
     {
         //
@@ -26,7 +28,10 @@ class Uppercase implements Rule
     public function passes($attribute, $value)
     {
         $strData = strtoupper($value);
-        return $strData===$value;
+        if ($strData===$value){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -36,6 +41,12 @@ class Uppercase implements Rule
      */
     public function message()
     {
-        return 'The :attribute must be uppercase letter.';
+        return trans('validation.uppercase');
+    }
+
+    public function setData($data)
+    {
+        $this->data=$data;
+        return $this;
     }
 }

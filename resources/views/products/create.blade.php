@@ -17,12 +17,29 @@
                     {{--<div>{{$request}}</div>--}}
                     <form method="POST" enctype="multipart/form-data" action="{{ route('products.store') }}">
                     @csrf
-
                         <div >
+                            <x-label for="createdDate" :value="__('Password')" />
+
+                            <input type="password" class="" name="password" >
+                            @error('password')
+                            <span class="text-red-600">{{ $message }}</span>
+                            @enderror
+
+                        </div>
+                        <div class="mt-4">
+                            <x-label for="createdDate" :value="__('Confirm Password')" />
+
+                            <input type="password" class="" name="password_confirmation" >
+
+                        </div>
+
+                        <div class="mt-4">
                             <x-label for="createdDate" :value="__('Created Date')" />
 
-                            <input type="date" class="" name="createdDate">
-
+                            <input type="date" class="" name="createdDate" value="{{old('createdDate')}}">
+                            @error('createdDate')
+                            <span class="text-red-600">{{ $message }}</span>
+                            @enderror
 
                         </div>
                         <div class="mt-4">

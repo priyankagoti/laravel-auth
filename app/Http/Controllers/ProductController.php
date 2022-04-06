@@ -8,11 +8,15 @@ use App\Models\City;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\User;
+use App\Rules\Uppercase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class ProductController extends Controller
 {
@@ -55,7 +59,7 @@ class ProductController extends Controller
 
     public function productIndex(){
         //return Product::latest()->get();
-        return ProductResource::collection(Product::latest()->get());
+        return ProductResource::collection(Product::with('user')->latest()->get());
     }
     /**
      * Show the form for creating a new resource.
@@ -76,44 +80,85 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProductRequest $request)
-    {
-        //dd($request);
-        /*$request->validate([
-            'name'=>'bail|required|unique:products|max:255',
-            'detail'=>'required',
-            'price'=>'required',
-            'category'=>'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-        ]);*/
-       /* $request->whenHas('color',function ($input){
-            dd($input);
-        });*/
-       // $request->mergeIfMissing(['votes'=>23]);
-       // $request->flash();
-         $validate=$request->validate();
-         //dd($validate);
+//    public function store(StoreProductRequest $request)
+//    {
+//        //dd($request);
+//        /*$request->validate([
+//            'name'=>'bail|required|unique:products|max:255',
+//            'detail'=>'required',
+//            'price'=>'required',
+//            'category'=>'required',
+//            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+//        ]);*/
+//       /* $request->whenHas('color',function ($input){
+//            dd($input);
+//        });*/
+//       // $request->mergeIfMissing(['votes'=>23]);
+//       // $request->flash();
+//        //$request->validate();
+//         //dd($validate);
+//        $request->validated();
+//        $input=$request->all();
+//        //$request->all();
+//        //$input=$request->cookie('name');
+//        //$file = $request->image->store('images');
+//        //return redirect('/products')->withInput();
+//      // dd($file);
+//
+//        $imageName = time().'.'.$request->image->extension();
+//        $request->image->storeAs('images', $imageName);
+//        $input['image']=$imageName;
+//        $input['type'] = json_encode($request->type);
+//        $input['user_id']=Auth::user()->id;
+//        //dd($input);
+//        Product::create($input);
+//
+//        //$request->session()->flash('success','Product created successfully....');
+//
+//        return redirect()-> route('products.index')
+//            ->with(['success'=>'product created successfully','input'=>$input]);
+//
+//
+//    }
+
+    public function store(Request $request){
+        $validator=Validator::make($request->all(),[
+            'password'=>['required', 'confirmed',Password::defaults()],
+            'createdDate'=>'required|date|after:09-04-2022',
+            'name'=>['required',new Uppercase()],
+            'detail'=>'exclude_unless:name,tea|required',
+            'price'=>['required',Rule::in(['NYC', 'LIT'])],
+            'image'=>'required'
+        ],
+         $messages=[
+             'name.required'=>'The :attribute is mandatory.'
+         ],
+         $attribute=[
+             'detail'=>'detail of product'
+         ])->validate();
+        //$validated = $validator->safe()->merge(['name' => 'Taylor Otwell']);
+        // $validator->safe()->except(['name', 'detail']);
+        //$validator->validated();
+        //$errors = $validator->errors();
+        //dd($errors);
+        //$validated = $validator->safe();
+        //dd($validated);
+       /* foreach ($validator->safe() as $key=>$value){
+            $arr=[];
+            $arr[]=$key;
+            dd($arr);
+        }*/
+       // dd($validated['detail']);
         $input=$request->all();
-        //$request->all();
-        //$input=$request->cookie('name');
-        //$file = $request->image->store('images');
-        //return redirect('/products')->withInput();
-      // dd($file);
-
-        $imageName = time().'.'.$request->image->extension();
-        $request->image->storeAs('images', $imageName);
-        $input['image']=$imageName;
-        $input['type'] = json_encode($request->type);
+        $input['type']=json_encode($request->type);
+        $imageName=time().'.'.$request->image->extension();
+       // $imageName=$request->image;
+        $request->image->storeAs('images',$imageName);
+        $input['image']= $imageName;
         $input['user_id']=Auth::user()->id;
-        //dd($input);
+        //dd($request->image);
         Product::create($input);
-
-        //$request->session()->flash('success','Product created successfully....');
-
-        return redirect()-> route('products.index')
-            ->with(['success'=>'product created successfully','input'=>$input]);
-
-
+        return redirect()->route('products.index')->with('success','Successfully created');
     }
 
     /**

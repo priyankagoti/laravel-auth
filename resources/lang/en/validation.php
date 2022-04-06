@@ -130,6 +130,7 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
+    'uppercase'=>'The :attribute should be in uppercase letter.',
 
     /*
     |--------------------------------------------------------------------------
@@ -164,6 +165,12 @@ return [
 
     'attributes' => [
         'name'=>'product name'
+    ],
+
+    'values'=>[
+        'name'=>[
+            'tea'=>'green tea'
+        ],
     ],
 
 ];

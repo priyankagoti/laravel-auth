@@ -2,26 +2,21 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use App\Rules\Uppercase;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProductRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    /*public function authorize()
+   // protected $stopOnFirstFailure = true;
+   // protected $redirectRoute = 'products.index';
+    public function authorize()
     {
-        return false;
-    }*/
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
+       // $product = Product::find($this->route('products.update'));
+        //return $this->user()->can('update', $this->product);
+      //  return $product && $this->user()->can('update', $product);
+         return true;
+    }
     public function rules()
     {
         return [
@@ -42,7 +37,7 @@ class StoreProductRequest extends FormRequest
     public function messages()
     {
         return[
-            'name.required'=>':attribute  is Required.'
+            'name.required'=>'The :attribute  is Required.'
         ];
     }
 
@@ -52,4 +47,5 @@ class StoreProductRequest extends FormRequest
             'detail'=>'product detail'
         ];
     }
+
 }
