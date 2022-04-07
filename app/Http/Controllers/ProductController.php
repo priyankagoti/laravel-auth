@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -52,14 +53,41 @@ class ProductController extends Controller
         $name = Route::currentRouteName();
         $action = Route::currentRouteAction();
         $user = User::find($authId);
-        $products=$user->products;
-        return view('products.index',compact('products','user','contentTypes','route','name','action','token','sessionVal'))
+        //$products=$user->products;
+        //$products= DB::table('products')->where('user_id',$user->id)->get();
+        $products= DB::table('products')->selectRaw('SUM(price)')->whereRaw("user_id='$user->id'")->groupBy('name')->havingRaw('SUM(price)<?',[500])->get();
+        //dd($products);
+        dd(Schema::hasColumn('products','email'));
+       //dd(DB::table('products')->orderBy('price','desc')->get());
+        $product_count = DB::table('products')->where('user_id',$user->id)->count();
+        $price = DB::table('products')->where('user_id',$user->id)->max('price');
+       // dd(DB::table('products')->where('user_id',$user->id)->where('name','tyf')->doesntExist());
+        //dd(DB::table('products')->where('user_id',$user->id)->select('name','detail as detail of product')->get());
+       // dd(DB::table('products')->where('user_id',$user->id)->select('name')->distinct()->get());
+        //dd(DB::select(DB::raw("select name,detail from products where user_id='$user->id'" )));
+        $name1=DB::table('products')->where('user_id',$user->id)->select('name');
+       // dd($name1->addSelect('detail')->get());
+       /*$names= DB::table('products')->orderBy('id')->chunk(10,function ($product_name) use ($product_array){
+           $product_array[]=$product_name;
+       });*/
+
+       // dd($product_array);
+        //dd($names);
+        /*foreach ($names as $product){
+            dd($product);
+        }*/
+       // dd($products);
+        return view('products.index',compact('price','product_count','products','user','contentTypes','route','name','action','token','sessionVal'))
             ->with('i',(request()->input('page',1)-1)*5);
     }
 
     public function productIndex(){
         //return Product::latest()->get();
-        return ProductResource::collection(Product::with('user')->latest()->get());
+        //return ProductResource::collection(Product::with('user')->latest()->get());
+       // DB::table('products')->where('name', 'asd')->first();
+        $users=DB::table('products')->get();
+        return ProductResource::collection($users);
+        //return $users;
     }
     /**
      * Show the form for creating a new resource.
@@ -125,9 +153,9 @@ class ProductController extends Controller
         $validator=Validator::make($request->all(),[
             'password'=>['required', 'confirmed',Password::defaults()],
             'createdDate'=>'required|date|after:09-04-2022',
-            'name'=>['required',new Uppercase()],
+            'name'=>['required'],
             'detail'=>'exclude_unless:name,tea|required',
-            'price'=>['required',Rule::in(['NYC', 'LIT'])],
+            'price'=>['required'],
             'image'=>'required'
         ],
          $messages=[

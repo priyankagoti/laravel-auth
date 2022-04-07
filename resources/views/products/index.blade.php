@@ -23,7 +23,11 @@
         <div class="max-w-7xl  mx-auto sm:px-6 lg:px-8">
             <div class="bg-white  shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                    <div>
+                        Product count : {{$product_count}}
+                        Max price : {{$price}}
 
+                    </div>
                    {{-- @foreach($contentTypes as $type)
                         <p>{{$type}}</p>
                     @endforeach--}}
@@ -46,13 +50,14 @@
                         </div>
                     @endif
 
+
                    <p>{{url('dstgdrg',['tygr'=>1,'ttyry'=>3])}}</p>
                     <p>url : {{action([\App\Http\Controllers\ProductController::class, 'index'])}}</p>
-                    @verbatim
+                    {{--@verbatim
                         <div class="container">
                             Hello, {{ $products }}.
                         </div>
-                    @endverbatim
+                    @endverbatim--}}
 
                     <p>{{session()->get('name')}}</p>
                     {{--@each('products.alert',$products,'p')--}}
@@ -68,28 +73,28 @@
                             <th>Actions</th>
                         </tr>
                         @foreach($products as $product)
-                            @once
+                            {{--@once
                                 <div><p>{{$loop->count}}</p></div>
-                            @endonce
+                            @endonce--}}
                         <tr>
                             <td>{{$loop->index+1}}
-{{--
-                                <p>URL : {{action([\App\Http\Controllers\ProductController::class,'index'],['id'=>$product->id])}}</p>
---}}
+
+                               {{-- <p>URL : {{action([\App\Http\Controllers\ProductController::class,'index'],['id'=>$product->id])}}</p>--}}
+
                             </td>
                             <td><img class="w-16 h-16 object-cover rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt=""></td>
                             <td @class(['text-gray-600'=>$loop->even])>{{$product->name}}</td>
                             <td>{{$product->detail}}</td>
                             <td>{{$product->price}}</td>
                             <td>
-                               {{-- {{gettype(json_decode($product->type))}}--}}
-                                @foreach(json_decode($product->type) as $value)
+
+                              {{--  @foreach(json_decode($product->type) as $value)
                                     {{$value}},
-                                @endforeach
+                                @endforeach--}}
                             </td>
                             <td>{{$product->color}}</td>
                             <td class="w-auto px-6">
-                                <form method="POST" action="{{ route('products.destroy',[$product]) }}">
+                                <form method="POST" action="{{ route('products.destroy',[$product->id]) }}">
 
                                     <div class="flex items-center justify-end space-x-8">
                                         <a href="{{route('products.download',$product->id)}}"
