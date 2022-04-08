@@ -54,10 +54,10 @@ class ProductController extends Controller
         $action = Route::currentRouteAction();
         $user = User::find($authId);
         //$products=$user->products;
-        //$products= DB::table('products')->where('user_id',$user->id)->get();
-        $products= DB::table('products')->selectRaw('SUM(price)')->whereRaw("user_id='$user->id'")->groupBy('name')->havingRaw('SUM(price)<?',[500])->get();
+        $products= DB::table('products')->where('user_id',$user->id)->get();
+        //$products= DB::table('products')->selectRaw('SUM(price)')->whereRaw("user_id='$user->id'")->groupBy('name')->havingRaw('SUM(price)<?',[500])->get();
         //dd($products);
-        dd(Schema::hasColumn('products','email'));
+       // dd(Schema::hasColumn('products','email'));
        //dd(DB::table('products')->orderBy('price','desc')->get());
         $product_count = DB::table('products')->where('user_id',$user->id)->count();
         $price = DB::table('products')->where('user_id',$user->id)->max('price');
@@ -151,7 +151,7 @@ class ProductController extends Controller
 
     public function store(Request $request){
         $validator=Validator::make($request->all(),[
-            'password'=>['required', 'confirmed',Password::defaults()],
+            'password'=>['required', 'confirmed'],
             'createdDate'=>'required|date|after:09-04-2022',
             'name'=>['required'],
             'detail'=>'exclude_unless:name,tea|required',

@@ -88,9 +88,9 @@
                             <td>{{$product->price}}</td>
                             <td>
 
-                              {{--  @foreach(json_decode($product->type) as $value)
+                                @foreach(json_decode($product->type) as $value)
                                     {{$value}},
-                                @endforeach--}}
+                                @endforeach
                             </td>
                             <td>{{$product->color}}</td>
                             <td class="w-auto px-6">

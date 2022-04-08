@@ -30,10 +30,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
        // JsonResource::withoutWrapping();
-        Password::defaults(function (){
+       /* Password::defaults(function (){
            $rule= Password::min(8);
            return $this->app->isProduction()?$rule->mixedCase():$rule->symbols();
-        });
+        });*/
 
         Blade::directive('datetime', function ($expression) {
             return "<?php echo ($expression)->format('d-m-Y H:i:s'); ?>";
