@@ -4,23 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+    use Prunable;
 
     protected $fillable=[
         'name','detail','price','category','type','color','image','user_id','country_name','city_name'
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-
-   /* public function setUserIdAttribute($value)
+    public function prunable()
     {
-        $this->attributes['user_id'] = Auth::user()->id;
-    }*/
+        return static::where('created_at', '<=', now()->subHour());
+    }
+    /* public function setUserIdAttribute($value)
+     {
+         $this->attributes['user_id'] = Auth::user()->id;
+     }*/
     /*public function setTypeAttribute($value)
     {
         $this->attributes['type'] = json_encode($value);

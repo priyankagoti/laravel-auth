@@ -40,6 +40,8 @@ class ProductController extends Controller
     {
         //dd($request->session());
         //print_r('index get');
+       /* Product::withTrashed()
+            ->restore();*/
         if ($request->accepts(['text/html', 'application/json'])) {
             $contentTypes='TRUE';
         }
@@ -54,7 +56,27 @@ class ProductController extends Controller
         $action = Route::currentRouteAction();
         $user = User::find($authId);
         //$products=$user->products;
-        $products= DB::table('products')->where('user_id',$user->id)->get();
+
+        //$products= DB::table('products')->where('user_id',$user->id)->get();
+        //$products= Product::latest()->where('user_id',$user->id)->get();
+        $products= Product::where('user_id',$user->id)->get();
+
+        $product = Product::chunk(1,function ($products){
+            foreach ($products as $product){
+                echo $product->name;
+                echo '</br>';
+              //  dd($result);
+            }
+            echo '</br>';
+        });
+        //$result=Product::all();
+        /*$result=Product::where('price','=',500)->firstOr(function (){
+            dd('not found');
+        })*/;
+        $result=Product::firstOrNew(['name'=>'Latte'],['detail'=>'tea type','price'=>300,'image'=>'1649480203.png']);
+       // dd($result);
+
+
         //$products= DB::table('products')->selectRaw('SUM(price)')->whereRaw("user_id='$user->id'")->groupBy('name')->havingRaw('SUM(price)<?',[500])->get();
         //dd($products);
        // dd(Schema::hasColumn('products','email'));
@@ -77,7 +99,8 @@ class ProductController extends Controller
             dd($product);
         }*/
        // dd($products);
-        return view('products.index',compact('price','product_count','products','user','contentTypes','route','name','action','token','sessionVal'))
+
+        return view('products.index',compact('product','price','product_count','products','user','contentTypes','route','name','action','token','sessionVal'))
             ->with('i',(request()->input('page',1)-1)*5);
     }
 

@@ -24,6 +24,9 @@
             <div class="bg-white  shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div>
+                        {{$product}}gfg
+                    </div>
+                    <div>
                         Product count : {{$product_count}}
                         Max price : {{$price}}
 
@@ -78,7 +81,7 @@
                             @endonce--}}
                         <tr>
                             <td>{{$loop->index+1}}
-
+                                {{$product->image}}
                                {{-- <p>URL : {{action([\App\Http\Controllers\ProductController::class,'index'],['id'=>$product->id])}}</p>--}}
 
                             </td>
