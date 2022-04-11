@@ -59,6 +59,7 @@ Route::middleware(['auth'])->group(function (){
 
 Route::resource('countries',CountryController::class);
 Route::resource('cities',CityController::class);
+Route::get('country/{$id}/cities',[CityController::class,'cityData']);
 
 Route::fallback(function () {
     return view('dashboard');

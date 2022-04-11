@@ -10,16 +10,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+    //use SoftDeletes;
     use Prunable;
 
     protected $fillable=[
         'name','detail','price','category','type','color','image','user_id','country_name','city_name'
     ];
 
-    public function user()
+    public function owner()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
     }
     public function prunable()
     {

@@ -40,7 +40,7 @@ class ProductController extends Controller
     {
         //dd($request->session());
         //print_r('index get');
-       /* Product::withTrashed()
+        /*Product::withTrashed()
             ->restore();*/
         if ($request->accepts(['text/html', 'application/json'])) {
             $contentTypes='TRUE';
@@ -55,20 +55,22 @@ class ProductController extends Controller
         $name = Route::currentRouteName();
         $action = Route::currentRouteAction();
         $user = User::find($authId);
-        //$products=$user->products;
+        $products=$user->products;
+        $product = $user->currentProduct
+        //dd($products);
 
         //$products= DB::table('products')->where('user_id',$user->id)->get();
         //$products= Product::latest()->where('user_id',$user->id)->get();
-        $products= Product::where('user_id',$user->id)->get();
+        //$products= Product::whereBelongsTo($user,'owner')->get()->latestProduct;
 
-        $product = Product::chunk(1,function ($products){
+        /*$product = Product::chunk(1,function ($products){
             foreach ($products as $product){
-                echo $product->name;
-                echo '</br>';
+               // echo $product->name;
+                //echo '</br>';
               //  dd($result);
             }
-            echo '</br>';
-        });
+            //echo '</br>';
+        });*/
         //$result=Product::all();
         /*$result=Product::where('price','=',500)->firstOr(function (){
             dd('not found');
@@ -120,6 +122,7 @@ class ProductController extends Controller
     public function create(Request $request)
     {
         $countries=Country::latest()->get();
+       // $cities=City::where('country_id',C)->get();
         $product=$request->all();
         //$cities=City::where('country_id',$country_id);
         return view('products.create',compact('countries','product','request'));
@@ -174,8 +177,8 @@ class ProductController extends Controller
 
     public function store(Request $request){
         $validator=Validator::make($request->all(),[
-            'password'=>['required', 'confirmed'],
-            'createdDate'=>'required|date|after:09-04-2022',
+            //'password'=>['required', 'confirmed'],
+            //'createdDate'=>'required|date|after:09-04-2022',
             'name'=>['required'],
             'detail'=>'exclude_unless:name,tea|required',
             'price'=>['required'],
@@ -200,6 +203,7 @@ class ProductController extends Controller
             dd($arr);
         }*/
        // dd($validated['detail']);
+
         $input=$request->all();
         $input['type']=json_encode($request->type);
         $imageName=time().'.'.$request->image->extension();
@@ -208,7 +212,10 @@ class ProductController extends Controller
         $input['image']= $imageName;
         $input['user_id']=Auth::user()->id;
         //dd($request->image);
-        Product::create($input);
+        Product::withoutEvents(function ()use($input){
+            Product::create($input);
+        });
+
         return redirect()->route('products.index')->with('success','Successfully created');
     }
 
@@ -279,8 +286,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $image_path=public_path().'/storage/images/'.$product->image;
-        unlink($image_path);
+       // $image_path=public_path().'/storage/images/'.$product->image;
+       // unlink($image_path);
         $product->delete();
         return redirect()->route('products.index')
             ->with('success','product deleted successfully');

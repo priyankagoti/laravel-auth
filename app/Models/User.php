@@ -42,7 +42,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function products(){
+    public function products()
+    {
         return $this->hasMany(Product::class)->latest();
+    }
+    public function currentProduct()
+    {
+        return $this->hasOne(Product::class)->ofMany([
+            'updated_at'=>'max',
+            'id'=>'max'
+        ],function($query){
+            $query->where('updated_at','<',now()->subHour(3));
+        });
     }
 }

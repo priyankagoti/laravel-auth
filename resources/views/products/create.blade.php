@@ -17,8 +17,8 @@
                     {{--<div>{{$request}}</div>--}}
                     <form method="POST" enctype="multipart/form-data" action="{{ route('products.store') }}">
                     @csrf
-                        <div >
-                            <x-label for="createdDate" :value="__('Password')" />
+                        {{--<div >
+                            <x-label for="Password" :value="__('Password')" />
 
                             <input type="password" class="" name="password" >
                             @error('password')
@@ -27,7 +27,7 @@
 
                         </div>
                         <div class="mt-4">
-                            <x-label for="createdDate" :value="__('Confirm Password')" />
+                            <x-label for="confirmPassword" :value="__('Confirm Password')" />
 
                             <input type="password" class="" name="password_confirmation" >
 
@@ -48,7 +48,7 @@
                             <label><input type="checkbox" class="" name="bool"> Check Box</label>
 
 
-                        </div>
+                        </div>--}}
                         <!--Product Name -->
                         <div class="mt-4">
                             <x-label for="name" :value="__('Product Name')" />
@@ -143,10 +143,10 @@
                         <div class="mt-4">
                             <x-label for="type" :value="__('Product Country')" />
 
-                            <select type="select" name="country_name" >
+                            <select type="select" name="country_name">
                                 <option disabled value="" selected>Select country</option>
                                 @foreach($countries as $country)
-                                <option value="{{$country->id}}">{{$country->name}}{{$country->cities}}</option>
+                                <option value="{{$country->id}}">{{$country->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -159,7 +159,6 @@
                                 <option disabled value="" selected>Select city</option>
                                 <option value="Surat">Surat</option>
                                 <option value="Ahmedabad">Ahmedabad</option>
-
                             </select>
                         </div>
                         <div class="flex items-center justify-end mt-4">

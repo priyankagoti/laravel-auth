@@ -94,4 +94,10 @@ class CityController extends Controller
     {
         //
     }
+
+    public function cityData($id){
+        $country=Country::find($id);
+        return $country->cities;
+
+    }
 }
