@@ -56,9 +56,44 @@ class ProductController extends Controller
         $action = Route::currentRouteAction();
         $user = User::find($authId);
         $products=$user->products;
-        $product = $user->currentProduct
+        //$product = $user->currentProduct;
         //dd($products);
+        /*$results= DB::table('users')->whereExists(function ($query){
+            $query->select(DB::raw(1))
+                ->from('products')
+                ->whereColumn('products.user_id','users.id');
+        })->get();*/
+        //$results = DB::table('products')->select('detail')->whereColumn('products.user_id','users.id')->orderByDesc('created_at')->get();
+        $results = User::where(function ($query){
+            $query->select('name')
+                ->from('products')
+                ->whereColumn('products.user_id','users.id')
+                ->orderByDesc('products.created_at')
+                ->limit(1);
 
+        },'sdfsd')->get();
+        //dd($results);
+        $results1 = Product::where('price','<',function ($query){
+            $query->selectRaw('avg(p.price)')->from('products as p');
+        })->get();
+        // dd($results1);
+        $results2 = Product::orderBy('name','asc')->get();
+        // dd($results2);
+        //$removeOrder = $results2->reorder('price', 'desc')->get();
+        //dd($removeOrder);
+         $randomProduct=Product::inRandomOrder()->first();
+        // dd($randomProduct);
+        $groupResults=Product::groupBy('user_id')->having('user_id', '>', 1)->get();
+        //dd($groupResults);
+        $skipTake =DB::table('products')->offset(2)->limit(5)->get();
+        //dd($skipTake);
+        $results3 = Product::when('user_id',function ($query){
+            $query->where('user_id','=',2);
+        })->get();
+        //dd($results3);
+        $increment=Product::increment('price',1,['name'=>'xyz']);
+       // Product::decrement('price',9);
+        //dd($increment);
         //$products= DB::table('products')->where('user_id',$user->id)->get();
         //$products= Product::latest()->where('user_id',$user->id)->get();
         //$products= Product::whereBelongsTo($user,'owner')->get()->latestProduct;
@@ -102,7 +137,7 @@ class ProductController extends Controller
         }*/
        // dd($products);
 
-        return view('products.index',compact('product','price','product_count','products','user','contentTypes','route','name','action','token','sessionVal'))
+        return view('products.index',compact('results','price','product_count','products','user','contentTypes','route','name','action','token','sessionVal'))
             ->with('i',(request()->input('page',1)-1)*5);
     }
 
@@ -209,7 +244,7 @@ class ProductController extends Controller
         $imageName=time().'.'.$request->image->extension();
        // $imageName=$request->image;
         $request->image->storeAs('images',$imageName);
-        $input['image']= $imageName;
+        $input['image']= config('app.url') .'/storage/images/'.$imageName;
         $input['user_id']=Auth::user()->id;
         //dd($request->image);
         Product::withoutEvents(function ()use($input){

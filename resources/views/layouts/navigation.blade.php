@@ -25,6 +25,9 @@
                     <x-nav-link :href="route('cities.index')" :active="request()->routeIs('cities.index')">
                         {{ __('Cities') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('images.create')" :active="request()->routeIs('images.create')">
+                        {{ __('Images') }}
+                    </x-nav-link>
                    {{-- <x-nav-link :href="route('posts')" :active="request()->routeIs('posts')">
                         {{ __('About Us') }}
                     </x-nav-link>

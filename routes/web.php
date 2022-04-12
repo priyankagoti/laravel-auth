@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvokableController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WelcomeController;
@@ -59,6 +60,8 @@ Route::middleware(['auth'])->group(function (){
 
 Route::resource('countries',CountryController::class);
 Route::resource('cities',CityController::class);
+Route::get('images/create',[ImageController::class,'create'])->name('images.create');
+Route::post('/images',[ImageController::class,'store'])->name('images.store');
 Route::get('country/{$id}/cities',[CityController::class,'cityData']);
 
 Route::fallback(function () {

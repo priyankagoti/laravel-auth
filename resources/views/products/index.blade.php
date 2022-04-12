@@ -24,7 +24,10 @@
             <div class="bg-white  shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div>
-                        {{$product}}gfg
+                        {{$results}}
+                        {{--@foreach($results as $result)
+                            <p>{{$result}}</p>
+                        @endforeach--}}
                     </div>
                     <div>
                         Product count : {{$product_count}}
@@ -81,11 +84,12 @@
                             @endonce--}}
                         <tr>
                             <td>{{$loop->index+1}}
-                                {{$product->image}}
+
                                {{-- <p>URL : {{action([\App\Http\Controllers\ProductController::class,'index'],['id'=>$product->id])}}</p>--}}
 
                             </td>
-                            <td><img class="w-16 h-16 object-cover rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt=""></td>
+                            {{--<td><img class="w-16 h-16 object-cover rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt=""></td>--}}
+                            <td><img class="w-16 h-16 object-cover rounded-md" src="{{$product->image }}" alt=""></td>
                             <td @class(['text-gray-600'=>$loop->even])>{{$product->name}}</td>
                             <td>{{$product->detail}}</td>
                             <td>{{$product->price}}</td>
