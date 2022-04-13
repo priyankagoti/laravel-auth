@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Extensions\CustomSessionDriver;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Session;
@@ -34,7 +35,11 @@ class AppServiceProvider extends ServiceProvider
            $rule= Password::min(8);
            return $this->app->isProduction()?$rule->mixedCase():$rule->symbols();
         });*/
+        Model::handleLazyLoadingViolationUsing(function ($model, $relation) {
+            $class = get_class($model);
 
+            info("Attempted to lazy load [{$relation}] on model [{$class}].");
+        });
         Blade::directive('datetime', function ($expression) {
             return "<?php echo ($expression)->format('d-m-Y H:i:s'); ?>";
         });

@@ -7,8 +7,10 @@ use App\Http\Resources\ProductResource;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Product;
+use App\Models\Supplier;
 use App\Models\User;
 use App\Rules\Uppercase;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -91,7 +93,62 @@ class ProductController extends Controller
             $query->where('user_id','=',2);
         })->get();
         //dd($results3);
-        $increment=Product::increment('price',1,['name'=>'xyz']);
+
+        $results4 = User::has('products','>=',5)->get();
+       // dd($results4);
+
+        $results5 = User::whereHas('products',function (Builder $query){
+            $query->where('name','like','x%');
+        },'>=',5)->get();
+        //dd($results5);
+
+        $results6 = User::whereRelation('products','created_at','>=',now()->subDay(2))->get();
+
+        $results7 = User::doesntHave('products')->get();
+
+        $results8 = User::whereDoesntHave('products',function (Builder $query){
+            $query->where('name','like','h%');
+        })->get();
+
+        User::whereDoesntHave('products.owner',function (Builder $query){
+            $query->where('name',0);
+        })->get();
+
+       User::withCount('products')->get();
+
+        $results9=User::withCount(['products','products as products_with_x'=> function (Builder $query){
+            $query->where('name','like','x%');
+       }])->get();
+
+//        echo $results9[2]->products_count;
+//        echo '</br>';
+//        echo $results9[2]->products_with_x;
+
+        $user = User::find(2);
+        //dd($user);
+        $results10=$user->loadCount('products');
+       // dd($results10);
+
+        User::select('name','email')->withCount('products')->get();
+
+        User::withSum('products as total_price','price')->get();
+        User::withExists('products','price')->get();
+
+        $results11=$user->loadSum('products','price');
+       // dd($results11);
+        User::select('name','email')->withExists('products')->get();
+
+        //User::with('products')->get()->dd();
+        //$results12=Product::with('owner')->get();
+        $results12=Product::all();
+        //dd($results12->collect()->all());
+        $results12->load('owner');
+        /*foreach($results12 as $p){
+            dd($p->owner) ;
+
+        }*/
+        //dd($results12);
+        //$increment=Product::increment('price',1,['name'=>'xyz']);
        // Product::decrement('price',9);
         //dd($increment);
         //$products= DB::table('products')->where('user_id',$user->id)->get();
@@ -297,12 +354,12 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
-        $image_path=public_path().'/storage/images/'.$product->image;
-        unlink($image_path);
+        //$image_path=public_path().'/storage/images/'.$product->image;
+       // unlink($image_path);
         $input = $request->all();
         $imageName = time().'.'.$request->image->extension();
         $request->image->storeAs('images', $imageName);
-        $input['image']=$imageName;
+        $input['image']=config('app.url') .'/storage/images/'.$imageName;
         $input['type'] = json_encode($request->type);
         $product->update($input);
 

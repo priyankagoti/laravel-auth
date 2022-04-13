@@ -13,6 +13,8 @@ class Product extends Model
     //use SoftDeletes;
     use Prunable;
 
+    protected $touches=['owner'];
+
     protected $fillable=[
         'name','detail','price','category','type','color','image','user_id','country_name','city_name'
     ];
