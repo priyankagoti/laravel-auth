@@ -218,13 +218,38 @@ class WelcomeController extends Controller
         $zipped = $collection18->zip([100, 200]);
         //dd($zipped->all());
 
-        $products=Product::where('price','>',500)->get();
+       // $products=Product::all();
         //dd($products);
 
-        $products->each(function ($item,$key){
+        /*$products->each(function ($item,$key){
             return $item['price']*2;
-        });
-
+        });*/
+        /*$products = Product::all()->map(function ($product) {
+            return $product->name;
+        })->reject(function ($name) {
+            return $name=='xyz';
+        });*/
+        //dd($products->values()->all());
+       // dd($products->diff(Product::whereIn('id', [8, 9, 10])->get()));
+           // $products->fresh('owner');
+        //dd($products->intersect(Product::whereIn('id', [8, 9, 10])->get()));
+        $users=User::all();
+        //dd($users->makeVisible('password')->toArray());
+        //dd($users->makeHidden(['amount','name'])->toArray());
+        $p=Product::all();
+        //dd($p);
+        $p = $p->unique();
+        //dd($p);
+        $p1=Product::find(8);
+        $p1->name = 'Sally';
+        $p1->mergeCasts(['price'=>'boolean']);
+       // dd($p1->price);
+      //  dd($p1->setAppends(['name_with_detail'])->toArray());
+        $products=Product::where('price','>',500)->get();
+        $products->toQuery()->update([
+            'price' => 600
+        ]);
+        //dd($products);
         $lazyCollection = LazyCollection::make(function () {
             yield 1;
             yield 2;
@@ -238,7 +263,7 @@ class WelcomeController extends Controller
         $generator=run();
         $generator->current();
         $generator->next();
-        dd($generator->current());
+        $generator->current();
         $lazyCollection->collect()->all();
         return view('welcome',$data,compact('collection'));
 

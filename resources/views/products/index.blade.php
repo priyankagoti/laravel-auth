@@ -67,7 +67,7 @@
 
                     <p>{{session()->get('name')}}</p>
                     {{--@each('products.alert',$products,'p')--}}
-                    <table class="">
+                    <table class="overflow-x-scroll">
                         <tr>
                             <th>No</th>
                             <th>Product Image</th>
@@ -90,7 +90,7 @@
                             </td>
                             {{--<td><img class="w-16 h-16 object-cover rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt=""></td>--}}
                             <td><img class="w-16 h-16 object-cover rounded-md" src="{{$product->image }}" alt=""></td>
-                            <td @class(['text-gray-600'=>$loop->even])>{{$product->name}}</td>
+                            <td>{{$product->name}}</td>
                             <td>{{$product->detail}}</td>
                             <td>{{$product->price}}</td>
                             <td>
@@ -127,10 +127,18 @@
 
                                     </div>
                                 </form>
+
                             </td>
                         </tr>
                         @endforeach
                     </table>
+                    <div class="text-right mt-4">
+                        {{$products->links()}}
+                        @foreach($products->items() as $option)
+                            {{$option->name}}
+                        @endforeach
+                        {{--{{$products->setCursorName('users')}}--}}
+                    </div>
                 </div>
             </div>
         </div>

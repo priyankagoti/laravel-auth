@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\PriceCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
@@ -14,7 +15,8 @@ class Product extends Model
     use Prunable;
 
     protected $touches=['owner'];
-
+    protected $appends=['name_with_detail'];
+    protected $casts=['price'=>PriceCast::class];
     protected $fillable=[
         'name','detail','price','category','type','color','image','user_id','country_name','city_name'
     ];
@@ -31,6 +33,23 @@ class Product extends Model
     public function prunable()
     {
         return static::where('created_at', '<=', now()->subHour());
+    }
+
+    public function getNameWithDetailAttribute($value){
+        $value="{$this->name} {$this->detail}";
+        return ucwords($value);
+    }
+
+    public function getNameAttribute($value){
+        return ucfirst($value);
+    }
+
+    public function getDetailAttribute($value){
+        return ucfirst($value);
+    }
+
+    public function setNameAttribute($value){
+        return $this->attributes['name']=strtoupper($value);
     }
     /* public function setUserIdAttribute($value)
      {

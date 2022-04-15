@@ -57,7 +57,10 @@ class ProductController extends Controller
         $name = Route::currentRouteName();
         $action = Route::currentRouteAction();
         $user = User::find($authId);
-        $products=$user->products;
+        $products=Product::latest()
+            ->where('user_id',$user->id)
+            ->paginate($perPage = 5, $columns = ['*'], $pageName = 'products')->fragment('user');;
+        //$products->appends(['sort' => 'price']);
         //$product = $user->currentProduct;
         //dd($products);
         /*$results= DB::table('users')->whereExists(function ($query){
@@ -202,9 +205,15 @@ class ProductController extends Controller
         //return Product::latest()->get();
         //return ProductResource::collection(Product::with('user')->latest()->get());
        // DB::table('products')->where('name', 'asd')->first();
-        $users=DB::table('products')->get();
-        return ProductResource::collection($users);
+        $products=Product::latest()->get();
+        return ProductResource::collection($products);
         //return $users;
+    }
+
+    public function productEdit($id){
+        $product= Product::find($id);
+
+        return ProductResource::make($product);
     }
     /**
      * Show the form for creating a new resource.

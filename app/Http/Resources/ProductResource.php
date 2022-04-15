@@ -23,7 +23,7 @@ class ProductResource extends JsonResource
             "category"=>$this->category,
             "type"=>json_decode($this->type),
             "color"=> $this->color,
-            "image"=>config('app.url') .'/storage/images/'.$this->image,
+            "image"=>$this->image,
             "created_at"=> $this->created_at,
             "updated_at"=> $this->updated_at,
             //"created_at"=> $this->created_at->format('Y-m-d H:i:s'),
