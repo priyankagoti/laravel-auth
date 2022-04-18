@@ -84,12 +84,13 @@
                             @endonce--}}
                         <tr>
                             <td>{{$loop->index+1}}
+                                {{$product->image}}
 
                                {{-- <p>URL : {{action([\App\Http\Controllers\ProductController::class,'index'],['id'=>$product->id])}}</p>--}}
 
                             </td>
-                            {{--<td><img class="w-16 h-16 object-cover rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt=""></td>--}}
-                            <td><img class="w-16 h-16 object-cover rounded-md" src="{{$product->image }}" alt=""></td>
+                            <td>{{$product->id}}<img class="w-16 h-16 object-cover rounded-md" src="{{ asset($product->image) }}" alt=""></td>
+                            {{--<td><img class="w-16 h-16 object-cover rounded-md" src="{{$product->image }}" alt=""></td>--}}
                             <td>{{$product->name}}</td>
                             <td>{{$product->detail}}</td>
                             <td>{{$product->price}}</td>
@@ -104,7 +105,7 @@
                                 <form method="POST" action="{{ route('products.destroy',[$product->id]) }}">
 
                                     <div class="flex items-center justify-end space-x-8">
-                                        <a href="{{route('products.download',$product->id)}}"
+                                        <a href="{{route('products.download',$product)}}"
                                            class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                                         >
                                             Download Image

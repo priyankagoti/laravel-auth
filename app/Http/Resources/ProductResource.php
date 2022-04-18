@@ -12,6 +12,7 @@ class ProductResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+    public static $wrap  = 'products';
     public function toArray($request)
     {
         return [
@@ -19,7 +20,6 @@ class ProductResource extends JsonResource
             'name'=>$this->name,
             'price'=>$this->price,
             "detail"=> $this->detail,
-            "price"=>$this->price,
             "category"=>$this->category,
             "type"=>json_decode($this->type),
             "color"=> $this->color,

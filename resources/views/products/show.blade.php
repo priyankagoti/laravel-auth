@@ -28,7 +28,7 @@
 
                 <div class="p-6 bg-white border-b border-gray-200 space-y-1">
                     <div>
-                        <img class="w-16 h-16 rounded-md" src="{{ asset('storage/images/'.$product->image) }}" alt="">
+                        <img class="w-16 h-16 rounded-md" src="{{ asset($product->image) }}" alt="">
                     </div>
 
                     <div>

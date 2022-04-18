@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use App\Models\City;
 use App\Models\Country;
@@ -13,9 +14,11 @@ use App\Rules\Uppercase;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -205,8 +208,16 @@ class ProductController extends Controller
         //return Product::latest()->get();
         //return ProductResource::collection(Product::with('user')->latest()->get());
        // DB::table('products')->where('name', 'asd')->first();
-        $products=Product::latest()->get();
+       // $products=Product::latest()->paginate(5);
+        $products=Cache::remember('products',60,function (){
+            return Product::latest()->paginate(5);
+
+        });
         return ProductResource::collection($products);
+
+
+
+        //return new ProductResource($products);
         //return $users;
     }
 
@@ -214,12 +225,10 @@ class ProductController extends Controller
         $product= Product::find($id);
 
         return ProductResource::make($product);
+        //return new ProductResource($product);
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function create(Request $request)
     {
         $countries=Country::latest()->get();
@@ -229,12 +238,6 @@ class ProductController extends Controller
         return view('products.create',compact('countries','product','request'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
 //    public function store(StoreProductRequest $request)
 //    {
 //        //dd($request);
@@ -310,7 +313,7 @@ class ProductController extends Controller
         $imageName=time().'.'.$request->image->extension();
        // $imageName=$request->image;
         $request->image->storeAs('images',$imageName);
-        $input['image']= config('app.url') .'/storage/images/'.$imageName;
+        $input['image']= '/storage/images/'.$imageName;
         $input['user_id']=Auth::user()->id;
         //dd($request->image);
         Product::withoutEvents(function ()use($input){
@@ -320,23 +323,17 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success','Successfully created');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function show(Product $product)
     {
+        $image_path=$product->image;
+       // echo $image_path;
+        //dd(response()->download($image_path));
+        //dd(Storage::download($image_path));
+        //dd(Storage::url($product->image));
         return view('products.show', compact('product'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Product $product)
     {
 
@@ -345,13 +342,7 @@ class ProductController extends Controller
         return view('products.edit',compact('product','type_type'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, Product $product)
     {
         $request->validate([
@@ -379,12 +370,7 @@ class ProductController extends Controller
        // return response()->json($product,200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Product $product)
     {
        // $image_path=public_path().'/storage/images/'.$product->image;
@@ -396,9 +382,12 @@ class ProductController extends Controller
 
     public function downloadImage(Product $product){
 
-        $image_path=public_path().'/storage/images/'.$product->image;
+        $image_path=public_path().$product->image;
+        echo $image_path;
         //$image=public_path().'/storage/images/'.$product->image;
+       // dd(response()->download($image_path));
         return response()->download($image_path);
+        //return Storage::download($image_path);
     }
 
     public function downloadStream(){

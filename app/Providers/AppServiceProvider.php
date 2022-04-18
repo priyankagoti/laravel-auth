@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Extensions\CustomSessionDriver;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Session;
@@ -30,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-       // JsonResource::withoutWrapping();
+        //JsonResource::withoutWrapping();
        /* Password::defaults(function (){
            $rule= Password::min(8);
            return $this->app->isProduction()?$rule->mixedCase():$rule->symbols();
